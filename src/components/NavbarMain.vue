@@ -1,6 +1,6 @@
 <template>
     <div class="nav">
-        <RouterLink to="/login">Randi</RouterLink>
+        <RouterLink to="" class="bg-black">Randi</RouterLink>
     </div>
 </template>
 
