@@ -12,7 +12,7 @@ import { Icon } from '@iconify/vue';
             <h1 class="font-fredokaone text-primary text-4xl text-center">Temukan Roti Gokki Pilihanmu</h1>
         </div>
 
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-10 lg:gap-x-20 mt-10">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-10 lg:gap-x-20 mt-10 px-2">
             <div class="flex flex-col w-40 lg:w-48  relative py-2 shadow-lg items-center px-6 rounded-4xl">
                 <img src="/public/varianrasa.png" alt="" class="w-[200px]">
                 <h1 class="text-[#333333] font-fredokaone font-medium">Roti Gokki Go Choco</h1>
