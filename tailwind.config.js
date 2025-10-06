@@ -7,10 +7,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#105594'
+        primary: '#105594',
+        pink: '#F12967'
       },
       fontFamily: {
-        poppins: ['Poppins', 'sans-serif']
+        poppins: ['Poppins', 'sans-serif'],
+        fredokaone: ['Fredoka One', 'sans-serif']
       }
     }
   },
