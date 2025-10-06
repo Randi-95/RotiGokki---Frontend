@@ -7,7 +7,7 @@ import { ref } from 'vue';
 
 
 <template>
-    <div class="fixed top-0 right-0 left-0">
+    <div class="fixed top-0 right-0 left-0 bg-white">
         <div class="bg-[rgba(0,0,0,0.6)] h-screen w-screen absolute top-0 z-20" v-if="isOpen" @click="isOpen = false">
         </div>
         <div class="flex items-center absolute lg:relative bg-white w-full px-6 lg:w-4/5  justify-between mx-auto font-poppins">
@@ -33,6 +33,7 @@ import { ref } from 'vue';
                     </RouterLink>
                 </div>
 
+                <transition name="slide">
                 <div class="absolute z-40 left-0 top-0 p-2 h-screen bg-white shadow-lg w-3/4 flex flex-col justify-between" v-if="isOpen">
                     <div class="">
                         <div class="flex items-center justify-between border-b mb-10 border-gray-300">
@@ -61,6 +62,7 @@ import { ref } from 'vue';
                         </RouterLink>
                     </div>
                 </div>
+                </transition>
 
             <div class="lg:hidden flex items-center gap-2">
                 <RouterLink to="" class="bg-gray-200 p-2 rounded-sm">
@@ -74,3 +76,25 @@ import { ref } from 'vue';
     </div>
 </template>
 
+<style scoped>
+    .slide-enter-from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    .slide-enter-to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    .slide-leave-from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    .slide-leave-to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    .slide-enter-active,
+    .slide-leave-active {
+        transition: all 0.3s ease-in-out;
+    }
+</style>

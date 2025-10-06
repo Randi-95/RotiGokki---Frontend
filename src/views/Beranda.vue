@@ -1,4 +1,5 @@
 <script setup>
+import HeroSection from '@/components/HeroSection.vue';
 import NavbarMain from '@/components/NavbarMain.vue';
 
 </script>
@@ -6,5 +7,5 @@ import NavbarMain from '@/components/NavbarMain.vue';
 
 <template>
     <NavbarMain/>
-    <p>Randi Permna</p>
+    <HeroSection/>
 </template>
