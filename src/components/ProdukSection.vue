@@ -4,7 +4,6 @@ import { Icon } from '@iconify/vue';
 
 <template>
   <div class="w-full flex flex-col items-center px-4 py-10">
-    <!-- Heading -->
     <div class="flex flex-col items-center text-center mb-10">
       <div class="bg-[#F9D3DE] font-poppins w-fit mb-2 py-1 px-3 rounded-sm">
         <p class="text-pink font-medium text-sm sm:text-base">
@@ -16,19 +15,18 @@ import { Icon } from '@iconify/vue';
       </h1>
     </div>
 
-    <!-- Grid Card -->
     <div
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-8 gap-x-6 lg:gap-x-10"
     >
       <div
         v-for="i in 4"
         :key="i"
-        class="flex flex-col relative py-4 shadow-lg items-center rounded-3xl bg-white transition hover:-translate-y-1 hover:shadow-xl w-full max-w-[200px] sm:max-w-[230px] mx-auto"
+        class="flex flex-col relative  py-4 shadow-lg items-center rounded-3xl bg-white transition hover:-translate-y-1 hover:shadow-xl w-full max-w-[280px] sm:max-w-[230px] mx-auto"
       >
         <img
           src="/public/varianrasa.png"
           alt="Roti Gokki"
-          class="w-[150px] sm:w-[180px] lg:w-[200px] -translate-y-6"
+          class="w-[300px] sm:w-[180px] lg:w-[200px] -translate-y-6"
         />
         <h1 class="text-[#333333] font-fredokaone font-medium text-center">
           Roti Gokki Go Choco
@@ -57,6 +55,6 @@ import { Icon } from '@iconify/vue';
 
 <style scoped>
 .button-keranjang {
-  border-radius: 2rem 0 2rem 0;
+  border-radius: 1.5rem 0 1.5rem 0;
 }
 </style>
