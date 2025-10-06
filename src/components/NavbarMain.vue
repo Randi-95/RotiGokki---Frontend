@@ -53,7 +53,7 @@ onUnmounted(() => {
       <transition name="slide">
         <div
           v-if="isOpen"
-          class="fixed z-50 left-0 top-0 p-2 h-screen bg-white shadow-lg w-3/4 flex flex-col justify-between overflow-y-auto"
+          class="fixed z-50 left-0 top-0 p-2 h-screen bg-white shadow-lg w-3/4 flex gap-10 flex-col  overflow-y-auto"
         >
           <div>
             <div class="flex items-center justify-between border-b mb-10 border-gray-300 px-2">
