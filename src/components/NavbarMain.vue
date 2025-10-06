@@ -1,7 +1,7 @@
 <script setup>
     import { Icon } from '@iconify/vue';
 import { ref } from 'vue';
-    const isOpen = ref(true)
+    const isOpen = ref(false)
 </script>
 
 
