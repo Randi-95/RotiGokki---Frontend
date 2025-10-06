@@ -12,8 +12,8 @@ import { Icon } from '@iconify/vue';
             <h1 class="font-fredokaone text-primary text-4xl text-center">Temukan Roti Gokki Pilihanmu</h1>
         </div>
 
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-20 mt-10">
-            <div class="flex flex-col w-[190px] relative py-2 shadow-lg items-center px-6 rounded-4xl">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-10 lg:gap-x-20 mt-10">
+            <div class="flex flex-col w-40 lg:w-48  relative py-2 shadow-lg items-center px-6 rounded-4xl">
                 <img src="/public/varianrasa.png" alt="" class="w-[200px]">
                 <h1 class="text-[#333333] font-fredokaone font-medium">Roti Gokki Go Choco</h1>
                 <p class="font-poppins text-[10px]">Lelehan krim cokelat mewah yang lumer tak tertahankan di setiap gigitan.</p>
@@ -25,7 +25,7 @@ import { Icon } from '@iconify/vue';
                 </div>
             </div>
 
-            <div class="flex flex-col w-[190px] relative py-2 shadow-lg items-center px-6 rounded-4xl">
+            <div class="flex flex-col w-40 lg:w-48 relative py-2 shadow-lg items-center px-6 rounded-4xl">
                 <img src="/public/varianrasa.png" alt="" class="w-[200px]">
                 <h1 class="text-[#333333] font-fredokaone font-medium">Roti Gokki Go Choco</h1>
                 <p class="font-poppins text-[10px]">Lelehan krim cokelat mewah yang lumer tak tertahankan di setiap gigitan.</p>
@@ -37,7 +37,7 @@ import { Icon } from '@iconify/vue';
                 </div>
             </div>
 
-            <div class="flex flex-col w-[190px] relative py-2 shadow-lg items-center px-6 rounded-4xl">
+            <div class="flex flex-col w-40 lg:w-48  relative py-2 shadow-lg items-center px-6 rounded-4xl">
                 <img src="/public/varianrasa.png" alt="" class="w-[200px]">
                 <h1 class="text-[#333333] font-fredokaone font-medium">Roti Gokki Go Choco</h1>
                 <p class="font-poppins text-[10px]">Lelehan krim cokelat mewah yang lumer tak tertahankan di setiap gigitan.</p>
@@ -49,7 +49,7 @@ import { Icon } from '@iconify/vue';
                 </div>
             </div>
 
-            <div class="flex flex-col w-[190px] relative py-2 shadow-lg items-center px-6 rounded-4xl">
+            <div class="flex flex-col w-40 lg:w-48  relative py-2 shadow-lg items-center px-6 rounded-4xl">
                 <img src="/public/varianrasa.png" alt="" class="w-[200px]">
                 <h1 class="text-[#333333] font-fredokaone font-medium">Roti Gokki Go Choco</h1>
                 <p class="font-poppins text-[10px]">Lelehan krim cokelat mewah yang lumer tak tertahankan di setiap gigitan.</p>
