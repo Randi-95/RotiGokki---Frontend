@@ -1,40 +1,52 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, watch, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 
 const isOpen = ref(false)
+const hasShadow = ref(false)
+
 watch(isOpen, (val) => {
-  if (val) {
-    document.body.style.overflow = 'hidden'
-  } else {
-    document.body.style.overflow = ''
-  }
+  document.body.style.overflow = val ? 'hidden' : ''
 })
 
+// Tambahkan listener scroll
+const handleScroll = () => {
+  hasShadow.value = window.scrollY > 10 
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
 onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
   document.body.style.overflow = ''
 })
 </script>
 
 <template>
-  <div class="fixed top-0 right-0 left-0 bg-white z-50">
+  <div
+    class="fixed top-0 right-0 left-0 bg-white z-50 transition-shadow duration-300"
+    :class="{ 'shadow-lg': hasShadow }"
+  >
     <div
       v-if="isOpen"
       class="bg-[rgba(0,0,0,0.6)] h-screen w-screen fixed top-0 left-0 z-40"
       @click="isOpen = false"
     ></div>
 
-    <div class="flex items-center relative bg-white w-full px-6 lg:w-4/5 justify-between mx-auto font-poppins">
+    <div
+      class="flex items-center relative bg-white w-full px-6 lg:w-4/5 justify-between mx-auto font-poppins"
+    >
       <RouterLink to="/">
         <img src="/public/Logo.png" alt="logo" class="w-30" />
       </RouterLink>
 
       <div class="hidden lg:block">
-        <div class="flex gap-12 font-medium text-sm ">
-          <RouterLink to="/" class=" text-[#484848]" active-class="text-primary font-bold">Beranda</RouterLink>
-          <RouterLink to="/produk" class=" text-[#484848]" active-class="text-primary font-bold">Produk</RouterLink>
-          <RouterLink to="/outlet" class=" text-[#484848]" active-class="text-primary font-bold">Outlet</RouterLink>
-          <RouterLink to="/kemitraan" class=" text-[#484848]" active-class="text-primary font-bold">Kemitraan</RouterLink>
+        <div class="flex gap-12 font-medium text-sm">
+          <RouterLink to="/" class="text-[#484848]" active-class="text-primary font-bold">Beranda</RouterLink>
+          <RouterLink to="/produk" class="text-[#484848]" active-class="text-primary font-bold">Produk</RouterLink>
+          <RouterLink to="/outlet" class="text-[#484848]" active-class="text-primary font-bold">Outlet</RouterLink>
+          <RouterLink to="/kemitraan" class="text-[#484848]" active-class="text-primary font-bold">Kemitraan</RouterLink>
         </div>
       </div>
 
@@ -53,7 +65,7 @@ onUnmounted(() => {
       <transition name="slide">
         <div
           v-if="isOpen"
-          class="fixed z-50 left-0 top-0 p-2 h-screen bg-white shadow-lg w-3/4 flex gap-10 flex-col  overflow-y-auto"
+          class="fixed z-50 left-0 top-0 p-2 h-screen bg-white shadow-lg w-3/4 flex gap-10 flex-col overflow-y-auto"
         >
           <div>
             <div class="flex items-center justify-between border-b mb-10 border-gray-300 px-2">
@@ -65,10 +77,10 @@ onUnmounted(() => {
 
             <div class="px-4">
               <div class="flex flex-col gap-6 font-medium">
-                <RouterLink to="/" class=" text-[#484848]" active-class="text-primary font-bold">Beranda</RouterLink>
-                <RouterLink to="/produk" class=" text-[#484848]" active-class="text-primary font-bold">Produk</RouterLink>
-                <RouterLink to="/outlet" class=" text-[#484848]" active-class="text-primary font-bold">Outlet</RouterLink>
-                <RouterLink to="/kemitraan" class=" text-[#484848]" active-class="text-primary font-bold">Kemitraan</RouterLink>
+                <RouterLink to="/" class="text-[#484848]" active-class="text-primary font-bold">Beranda</RouterLink>
+                <RouterLink to="/produk" class="text-[#484848]" active-class="text-primary font-bold">Produk</RouterLink>
+                <RouterLink to="/outlet" class="text-[#484848]" active-class="text-primary font-bold">Outlet</RouterLink>
+                <RouterLink to="/kemitraan" class="text-[#484848]" active-class="text-primary font-bold">Kemitraan</RouterLink>
               </div>
             </div>
           </div>
@@ -82,7 +94,7 @@ onUnmounted(() => {
               <p class="text-xs">Hubungi Kami</p>
             </RouterLink>
             <RouterLink to="">
-               <Icon icon="icon-park-outline:shopping" class="text-black w-10 h-10 bg-gray-300 p-2 rounded-md" />
+              <Icon icon="icon-park-outline:shopping" class="text-black w-10 h-10 bg-gray-300 p-2 rounded-md" />
             </RouterLink>
           </div>
         </div>
