@@ -3,8 +3,6 @@ import { Icon } from '@iconify/vue'
 import { ref, watch, onUnmounted } from 'vue'
 
 const isOpen = ref(false)
-
-// ✅ Kunci scroll body ketika menu terbuka
 watch(isOpen, (val) => {
   if (val) {
     document.body.style.overflow = 'hidden'
@@ -13,7 +11,6 @@ watch(isOpen, (val) => {
   }
 })
 
-// ✅ Bersihkan kalau komponen dilepas dari DOM
 onUnmounted(() => {
   document.body.style.overflow = ''
 })
@@ -29,15 +26,15 @@ onUnmounted(() => {
 
     <div class="flex items-center relative bg-white w-full px-6 lg:w-4/5 justify-between mx-auto font-poppins">
       <div>
-        <img src="/public/Logo.png" alt="logo" class="w-28" />
+        <img src="/public/Logo.png" alt="logo" class="w-30" />
       </div>
 
       <div class="hidden lg:block">
-        <div class="flex gap-12 font-medium text-sm text-[#484848]">
-          <RouterLink to="" class="font-bold text-primary">Beranda</RouterLink>
-          <RouterLink to="">Produk</RouterLink>
-          <RouterLink to="">Outlet</RouterLink>
-          <RouterLink to="">Kemitraan</RouterLink>
+        <div class="flex gap-12 font-medium text-sm ">
+          <RouterLink to="/" class=" text-[#484848]" active-class="text-primary font-bold">Beranda</RouterLink>
+          <RouterLink to="/produk" class=" text-[#484848]" active-class="text-primary font-bold">Produk</RouterLink>
+          <RouterLink to="/outlet" class=" text-[#484848]" active-class="text-primary font-bold">Outlet</RouterLink>
+          <RouterLink to="/kemitraan" class=" text-[#484848]" active-class="text-primary font-bold">Kemitraan</RouterLink>
         </div>
       </div>
 
@@ -67,11 +64,11 @@ onUnmounted(() => {
             </div>
 
             <div class="px-4">
-              <div class="flex flex-col gap-6 font-medium text-sm text-[#484848]">
-                <RouterLink to="" class="font-bold text-primary">Beranda</RouterLink>
-                <RouterLink to="">Produk</RouterLink>
-                <RouterLink to="">Outlet</RouterLink>
-                <RouterLink to="">Kemitraan</RouterLink>
+              <div class="flex flex-col gap-6 font-medium">
+                <RouterLink to="/" class=" text-[#484848]" active-class="text-primary font-bold">Beranda</RouterLink>
+                <RouterLink to="/produk" class=" text-[#484848]" active-class="text-primary font-bold">Produk</RouterLink>
+                <RouterLink to="/outlet" class=" text-[#484848]" active-class="text-primary font-bold">Outlet</RouterLink>
+                <RouterLink to="/kemitraan" class=" text-[#484848]" active-class="text-primary font-bold">Kemitraan</RouterLink>
               </div>
             </div>
           </div>
