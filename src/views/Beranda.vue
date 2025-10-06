@@ -8,4 +8,6 @@ import NavbarMain from '@/components/NavbarMain.vue';
 <template>
     <NavbarMain/>
     <HeroSection/>
+    <HeroSection/>
+    <HeroSection/>
 </template>
