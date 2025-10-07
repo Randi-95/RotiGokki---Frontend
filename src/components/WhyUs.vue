@@ -9,7 +9,7 @@ import { Icon } from '@iconify/vue';
             <div class="justify-center items-center flex-col w-2/3  flex">
                 <img src="/public/why.png" alt="">
             </div>
-            <div class="flex flex-col w-1/2 h-screen">
+            <div class="flex flex-col w-1/2 h-screen items-center justify-center">
                 <div class="py-1 px-3 mb-2 mt-1 justify-start self-start">
                     <p class="bg-[#F9D3DE] w-fit mb-1 py-1 px-9 rounded-sm text-pink font-medium font-poppins">Kenapa RotiGokki?</p>
                 </div>
