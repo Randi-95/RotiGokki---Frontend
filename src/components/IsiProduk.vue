@@ -4,7 +4,7 @@ import { Icon } from '@iconify/vue';
 </script>
 
 <template>
-    <div class="mb-20">
+    <div class="mb-20 px-6">
         <div class="mt-20 px-10">
             <h1 class="font-poppins text-xl font-semibold">Roti Satuan</h1>
         </div>
