@@ -1,7 +1,7 @@
 
 import Beranda from '@/views/Beranda.vue'
 import Login from '@/views/Login.vue'
-import Outlet from '@/views/outlet.vue'
+import Outlet from '@/views/Outlet.vue'
 import Produk from '@/views/Produk.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
