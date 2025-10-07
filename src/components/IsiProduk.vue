@@ -5,17 +5,17 @@ import { Icon } from '@iconify/vue';
 
 <template>
     <div class="mb-20">
-        <div class="mt-20 px-20">
+        <div class="mt-20 px-10">
             <h1 class="font-poppins text-xl font-semibold">Roti Satuan</h1>
         </div>
         
         <div
-        class="grid grid-cols-1 px-20 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-8 gap-x-6 lg:gap-x-10"
+        class="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-8 gap-x-6 lg:gap-x-10"
         >
             <div
                 v-for="i in 4"
                 :key="i"
-                class="flex flex-col relative py-4 shadow-lg rounded-3xl bg-white transition hover:-translate-y-1 hover:shadow-xl w-full max-w-[280px] sm:max-w-[230px] mx-auto"
+                class="flex flex-col relative py-4 shadow-lg rounded-3xl mt-10 bg-white transition hover:-translate-y-1 hover:shadow-xl w-full max-w-[400px] sm:max-w-[230px] mx-auto"
                 >
                 <img
                     src="/public//go coffe.png"
