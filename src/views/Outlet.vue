@@ -25,7 +25,6 @@ import { Icon } from '@iconify/vue';
         </div>
     </div>
 </template>
-
 <style scoped>
     .container-input input::placeholder{
         color: #898787;
