@@ -2,7 +2,6 @@
 import JudulOutlet from '@/components/JudulOutlet.vue';
 import NavbarMain from '@/components/NavbarMain.vue';
 import { Icon } from '@iconify/vue';
-
 </script>
 
 <template>
@@ -33,7 +32,54 @@ import { Icon } from '@iconify/vue';
                 <option value="">Tulungagung</option>
             </select>
             </div>
+        </div>
+    </div>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-10 w-fit mx-auto gap-x-30 gap-y-16 px-6">
+        <div v-for="i in 6" :key="i" class="md:w-70 shadow-xl p-6 w-full rounded-lg">
+            <h1 class="font-poppins font-bold text-lg">Outlet Roti <span class="text-pink">Gokki</span> Kutisari</h1>
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center mt-2 gap-3">
+                    <Icon 
+                        icon="mdi:location" 
+                        class="text-[#757272] w-12 h-12" 
+                    />
+                    <p class="font-poppins text-[#5E5757] text-[14px] leading-5">Jl. Kutisari Utara No. 55, Kutisari, Kec. Tenggilis Mejoyo, Surabaya, Jawa Timur 60291</p>
+                </div>
+
+                <div class="flex items-center pl-1 gap-3">
+                    <Icon 
+                        icon="tabler:clock-filled" 
+                        class="text-[#757272] w-6 h-6" 
+                    />
+                    <p class="font-poppins text-[#5E5757] text-[14px] leading-5">Buka: 07.00 - 20.00</p>
+                </div>
+
+                <div class="flex  items-center pl-1 gap-3">
+                    <Icon 
+                        icon="ic:round-phone" 
+                        class="text-[#757272] w-6 h-6" 
+                    />
+                    <p class="font-poppins text-[#5E5757] text-[14px] leading-5">0858-5702-7026</p>
+                </div>
+            </div>
+
+            <div class="flex gap-2 mt-10">
+                <div class="bg-primary w-full px-4 py-2 flex gap-2 border border-transparent rounded-sm justify-center">
+                    <Icon 
+                        icon="fa7-solid:diamond-turn-right" 
+                        class="text-white w-6 h-6" 
+                    />
+                    <h2 class="font-poppins font-bold text-white">Rute</h2>
+                </div>
+                <div class="bg-transparent w-full px-4 py-2 border border-primary flex gap-2 rounded-sm justify-center">
+                    <Icon 
+                        icon="meteor-icons:whatsapp" 
+                        class="text-primary w-6 h-6" 
+                    />
+                    <h2 class="font-poppins font-bold text-primary">WhatsApp</h2>
+                </div>
+            </div>
         </div>
     </div>
 
