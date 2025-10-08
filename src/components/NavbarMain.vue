@@ -51,7 +51,7 @@ onUnmounted(() => {
       </div>
 
       <div class="lg:flex hidden items-center gap-4">
-        <RouterLink to="">
+        <RouterLink to="/keranjang">
           <img src="/public/Vector.svg" alt="" class="bg-[#ECE8E8] p-2 rounded-sm" />
         </RouterLink>
         <RouterLink
@@ -93,7 +93,7 @@ onUnmounted(() => {
               <Icon icon="line-md:phone" class="text-white w-6 h-6" />
               <p class="text-xs">Hubungi Kami</p>
             </RouterLink>
-            <RouterLink to="">
+            <RouterLink to="/keranjang">
               <Icon icon="icon-park-outline:shopping" class="text-black w-10 h-10 bg-gray-300 p-2 rounded-md" />
             </RouterLink>
           </div>

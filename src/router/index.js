@@ -1,5 +1,6 @@
 
 import Beranda from '@/views/Beranda.vue'
+import Keranjang from '@/views/Keranjang.vue'
 import Login from '@/views/Login.vue'
 import Outlet from '@/views/Outlet.vue'
 import Produk from '@/views/Produk.vue'
@@ -26,6 +27,12 @@ const router = createRouter({
       name: 'outlet',
       component: Outlet,
       meta: { layout: 'main' },
+    },
+    {
+      path: '/keranjang',
+      name: 'keranjang',
+      component: Keranjang,
+      meta: { layout: 'keranjang' },
     },
      {
       path: '/login',
