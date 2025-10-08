@@ -4,7 +4,7 @@ import { Icon } from '@iconify/vue';
 </script>
 
 <template>
-    <div class="px-10 py-10  h-screen">
+    <div class="px-10 py-10  md:h-screen">
         <div class="">
             <Icon icon="famicons:arrow-back-sharp" class="w-8 h-8 text-[#333333]"/>
             <h1 class="text-xl font-poppins font-medium text-[#333333] mt-6">Keranjang Belanja Anda</h1>
@@ -41,7 +41,7 @@ import { Icon } from '@iconify/vue';
             </div>
 
             </div>
-            <div class="lg:w-1/2 h-full pt-13">
+            <div class="lg:w-1/2 h-full">
                 <h1 class="font-poppins text-[#333333] font-semibold text-xl">Ringkasan Pemesanan</h1>
 
                 <div class="mt-5">
@@ -61,10 +61,20 @@ import { Icon } from '@iconify/vue';
                         />
 
                         <h1 class="font-poppins text-[#333333] font-medium text-md text-lg mt-2">Alamat Pengiriman</h1>
-                        <textarea 
-                            placeholder="Masukkan nama pemesan"
-                            class="mt-2 outline-none w-full h-full text-[15px] md:text-[16px] rounded-sm border py-3 px-2 border-[#cac7c7]" 
-                        />
+                        <textarea placeholder="Masukkan nama pemesan"
+                            class="mt-2 outline-none w-full h-full text-[15px] md:text-[16px] rounded-sm border py-3 px-2 border-[#cac7c7]"></textarea>
+                        
+                        <div class="w-full flex justify-between font-poppins mt-2">
+                            <p class="font-semibold text-sm text-[#333333]">Jumlah Produk</p>
+                            <p class="text-[#333333] font-semibold">0</p>
+                        </div>
+
+                        <div class="w-full flex justify-between font-poppins mt-4">
+                            <p class="font-semibold text-sm text-[#333333]">Subtotal</p>
+                            <p class="text-[#333333] font-semibold">Rp. 0</p>
+                        </div>
+
+                        <button class="bg-primary text-white font-poppins font-semibold w-full py-3 mt-2 rounded-md">Lanjutkan ke Checkout</button>
                     </div>
                 </div>
             </div>
