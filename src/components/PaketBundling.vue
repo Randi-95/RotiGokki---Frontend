@@ -1,60 +1,37 @@
 <template>
-    <div class="w-full h-screen flex">
-        <!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Special Bundling GOBOX</title>
-</head>
-<body>
+
     <div class="container">
-        <div class="left-content">
+        <div class="left-content order-2 lg:order-1">
             <h1 class="title font-fredokaone">Spesial Bundling<br>GOBOX Untukmu!</h1>
             <p class="subtitle font-poppins">Rasakan kelezatan roti berkualitas premium<br>dengan harga yang tetap bersahabat.</p>
             
             <div class="features">
                 <div class="feature-item">
                     <div class="checkmark"></div>
-                    <span class="feature-text font-fredokaone">Lebih Hemat!</span>
+                    <span class="feature-text font-fredokaone font-normal">Lebih Hemat!</span>
                 </div>
                 <div class="feature-item">
                     <div class="checkmark"></div>
-                    <span class="feature-text font-fredokaone">Lebih Kenyang!</span>
+                    <span class="feature-text font-fredokaone font-normal">Lebih Kenyang!</span>
                 </div>
                 <div class="feature-item">
                     <div class="checkmark"></div>
-                    <span class="feature-text font-fredokaone">Lebih Puas!</span>
+                    <span class="feature-text font-fredokaone font-normal">Lebih Puas!</span>
                 </div>
             </div>
             
-            <button class="cta-button font-bold border border-transparent rounded-sm font-poppins">Pesan Sekarang</button>
+            <button class="cta-button font-bold border border-transparent rounded-md font-poppins">Pesan Sekarang</button>
         </div>
         
-        <div class="right-content">
+        <div class="right-content lg:order-2">
             <img src="/public/grup47.png" alt="Paket Bundling GOBOX" class="product-image">
         </div>
-    </div>
-</body>
-</html>
     </div>
 </template>
 
 <style scoped>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'fredokaone', sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
-        }
-
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -117,7 +94,6 @@
 
         .feature-text {
             font-size: 28px;
-            font-weight: 900;
             color: #333;
         }
 
@@ -128,11 +104,9 @@
             font-weight: 900;
             padding: 20px 60px;
             border: none;
-            border-radius: 15px;
             cursor: pointer;
             width: 100%;
             max-width: 400px;
-            transition: background 0.3s ease;
         }
 
         .cta-button:hover {
@@ -150,8 +124,6 @@
             width: 100%;
             max-width: 500px;
             height: auto;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
         }
 
         @media (max-width: 1024px) {

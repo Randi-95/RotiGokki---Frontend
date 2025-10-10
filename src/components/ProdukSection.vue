@@ -21,7 +21,7 @@ import { Icon } from '@iconify/vue';
     <div
       v-for="i in 4"
       :key="i"
-      class="flex flex-col relative py-4 shadow-lg rounded-3xl bg-white transition hover:-translate-y-1 hover:shadow-xl w-full max-w-[280px] sm:max-w-[230px] mx-auto"
+      class="flex flex-col relative py-4 shadow-xl rounded-3xl bg-[#EFE5DA] transition hover:-translate-y-1 hover:shadow-xl w-full max-w-[280px] sm:max-w-[230px] mx-auto"
     >
       <img
         src="/public//go coffe.png"

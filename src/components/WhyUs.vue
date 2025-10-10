@@ -4,9 +4,9 @@ import { Icon } from '@iconify/vue';
 </script>
 
 <template>
-    <div class="w-full lg:h-screen flex items-center">
-        <div class="w-full flex flex-col items-center mt-10 lg:flex-row sm:mb-0">
-            <div class="justify-center items-center flex-col w-2/3 flex lg:w-1/2  sm:order-0 md:order-0 lg:order-0 mb-10 lg:mb-0">
+    <div class="w-full px-10 flex items-center">
+        <div class="w-full flex flex-col items-center mt-10 lg:flex-row sm:mb-0 gap-4">
+            <div class="justify-center items-center flex-col flex lg:w-1/2  sm:order-0 md:order-0 lg:order-0 mb-10 lg:mb-0">
                 <img src="/public/why.png" alt="">
             </div>
             <div class="flex flex-col lg:w-1/2 md:w-1/2 h-screen items-center justify-center  lg:pt-0">
@@ -18,29 +18,29 @@ import { Icon } from '@iconify/vue';
                 </div>
                 <div class="flex flex-row mb-4 py-1 px-3 items-center">
                     <div class="p-3 rounded-[18px] bg-[#F9D3DE] max-w-[64px] max-h-[54px]">
-                        <Icon icon="mdi:fire" class="text-[#F12967] w-[28px] h-[28px]"/>
+                        <Icon icon="mdi:bread-slice" class="text-[#F12967] w-[28px] h-[28px]"/>
                     </div>
                     <div class="flex flex-col px-3">
                         <h1 class="font-fredokaone px-2 text-[20px] text-[#333333]">Fresh dari oven setiap hari</h1>
-                        <p class="font-poppins text-[18] px-2">Setiap roti dipanggang segar setiap hari untuk menjamin kualitas terbaik.</p>
+                        <p class="font-poppins text-md px-2">Setiap roti dipanggang segar setiap hari untuk menjamin kualitas terbaik.</p>
                     </div>
                 </div>
                 <div class="flex flex-row mb-4 py-1 px-3 mt-1 items-center">
                     <div class="p-3 rounded-[18px] bg-[#F9D3DE] max-w-[64px] max-h-[54px]">
-                        <Icon icon="mdi:fire" class="text-[#F12967] w-[28px] h-[28px]"/>
+                        <Icon icon="mdi:feather" class="text-[#F12967] w-[28px] h-[28px]"/>
                     </div>
                     <div class="flex flex-col px-3">
                         <h1 class="font-fredokaone px-2 text-[20px] text-[#333333]">Tekstur Lembut & Aroma Menggoda</h1>
-                        <p class="font-poppins text-[18] px-2">Nikmati tekstur lembut dengan aroma khas yang menggugah selera.</p>
+                        <p class="font-poppins text-md px-2">Nikmati tekstur lembut dengan aroma khas yang menggugah selera.</p>
                     </div>
                 </div>
                 <div class="flex flex-row mb-4 py-1 px-3 mt-1 items-center">
                     <div class="p-3 rounded-[18px] bg-[#F9D3DE] max-w-[64px] max-h-[54px]">
-                        <Icon icon="mdi:fire" class="text-[#F12967] w-[28px] h-[28px]"/>
+                        <Icon icon="mdi:hand-coin" class="text-[#F12967] w-[28px] h-[28px]"/>
                     </div>
                     <div class="flex flex-col px-3">
                         <h1 class="font-fredokaone px-2 text-[20px] text-[#333333]">Harga Terjangkau</h1>
-                        <p class="font-poppins text-[18] px-2">Rasakan kelezatan roti berkualitas premium dengan harga yang tetap bersahabat.</p>
+                        <p class="font-poppins text-md px-2">Rasakan kelezatan roti berkualitas premium dengan harga yang tetap bersahabat.</p>
                     </div>
                 </div>
             </div>
