@@ -17,7 +17,7 @@ import { Icon } from '@iconify/vue';
                     <p class="text-primary font-normal text-4xl lg:text-5xl font-fredokaone text-left">Nikmati rasa terbaik roti lembut & creamy kami.</p>
                 </div>
                 <div class="">
-                    <div class="flex md:flex-row flex-col mb-4 py-1 px-3 md:items-center">
+                    <div class="flex md:flex-row flex-col mb-4 py-1  md:items-center">
                         <div class="p-3 rounded-[18px] bg-[#F9D3DE] max-w-[64px] ml-4 mb-2 md:max-h-[54px] w-fit flex justify-center">
                             <Icon icon="mdi:bread-slice" class="text-[#F12967] w-[28px] h-[28px]"/>
                         </div>
@@ -26,7 +26,7 @@ import { Icon } from '@iconify/vue';
                             <p class="font-poppins text-md px-2">Setiap roti dipanggang segar setiap hari untuk menjamin kualitas terbaik.</p>
                         </div>
                     </div>
-                    <div class="flex md:flex-row flex-col mb-4 py-1 px-3 md:items-center">
+                    <div class="flex md:flex-row flex-col mb-4 py-1  md:items-center">
                         <div class="p-3 rounded-[18px] bg-[#F9D3DE] max-w-[64px] ml-4 mb-2 md:max-h-[54px] w-fit flex justify-center">
                             <Icon icon="mdi:feather" class="text-[#F12967] w-[28px] h-[28px]"/>
                         </div>
@@ -35,7 +35,7 @@ import { Icon } from '@iconify/vue';
                             <p class="font-poppins text-md px-2">Nikmati tekstur lembut dengan aroma khas yang menggugah selera.</p>
                         </div>
                     </div>
-                    <div class="flex md:flex-row flex-col mb-4 py-1 px-3 md:items-center">
+                    <div class="flex md:flex-row flex-col mb-4 py-1  md:items-center">
                         <div class="p-3 rounded-[18px] bg-[#F9D3DE] max-w-[64px] ml-4 mb-2 md:max-h-[54px] w-fit flex justify-center">
                             <Icon icon="mdi:hand-coin" class="text-[#F12967] w-[28px] h-[28px]"/>
                         </div>
