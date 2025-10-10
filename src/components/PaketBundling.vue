@@ -1,5 +1,4 @@
 <template>
-
     <div class="container">
         <div class="left-content order-2 lg:order-1">
             <h1 class="title font-fredokaone">Spesial Bundling<br>GOBOX Untukmu!</h1>
