@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import HeroKemitraan from '@/components/HeroKemitraan.vue';
+import KeuntunganMitra from '@/components/KeuntunganMitra.vue';
 import NavbarMain from '@/components/NavbarMain.vue';
 
 </script>
@@ -7,4 +8,5 @@ import NavbarMain from '@/components/NavbarMain.vue';
 <template>
     <NavbarMain/>
     <HeroKemitraan/>
+    <KeuntunganMitra/>
 </template>
