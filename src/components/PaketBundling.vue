@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container lg:mt-0 mt-20">
         <div class="left-content order-2 lg:order-1">
             <h1 class="title font-fredokaone">Spesial Bundling<br>GOBOX Untukmu!</h1>
             <p class="subtitle font-poppins">Rasakan kelezatan roti berkualitas premium<br>dengan harga yang tetap bersahabat.</p>
@@ -31,7 +31,6 @@
 <style scoped>
         .container {
             max-width: 1200px;
-            margin: 0 auto;
             background: white;
             border-radius: 20px;
             padding: 60px;
@@ -121,8 +120,6 @@
 
         .product-image {
             width: 100%;
-            max-width: 500px;
-            height: auto;
         }
 
         @media (max-width: 1024px) {
@@ -184,10 +181,6 @@
 
             .right-content {
                 width: 100%;
-            }
-
-            .product-image {
-                max-width: 60%;
             }
         }
 
