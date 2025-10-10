@@ -1,5 +1,5 @@
-
 import Beranda from '@/views/Beranda.vue'
+import Kemitraan from '@/views/Kemitraan.vue'
 import Keranjang from '@/views/Keranjang.vue'
 import Login from '@/views/Login.vue'
 import Outlet from '@/views/Outlet.vue'
@@ -26,6 +26,12 @@ const router = createRouter({
       path: '/outlet',
       name: 'outlet',
       component: Outlet,
+      meta: { layout: 'main' },
+    },
+    {
+      path: '/kemitraan',
+      name: 'kemitraan',
+      component: Kemitraan,
       meta: { layout: 'main' },
     },
     {
