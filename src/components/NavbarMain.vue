@@ -9,7 +9,7 @@ watch(isOpen, (val) => {
   document.body.style.overflow = val ? 'hidden' : ''
 })
 
-// Tambahkan listener scroll
+
 const handleScroll = () => {
   hasShadow.value = window.scrollY > 10 
 }
