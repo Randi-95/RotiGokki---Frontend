@@ -1,5 +1,6 @@
 <script setup>
 import CtaOutlet from '@/components/CtaOutlet.vue';
+import FooterMain from '@/components/FooterMain.vue';
 import HeroSection from '@/components/HeroSection.vue';
 import Kemitraan from '@/components/Kemitraan.vue';
 import NavbarMain from '@/components/NavbarMain.vue';
@@ -18,4 +19,5 @@ import WhyUs from '@/components/WhyUs.vue';
     <PaketBundling/>
     <Kemitraan/>
     <CtaOutlet/>
+    <FooterMain/>
 </template>

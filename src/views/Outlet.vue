@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import FooterMain from '@/components/FooterMain.vue';
 import JudulOutlet from '@/components/JudulOutlet.vue';
 import NavbarMain from '@/components/NavbarMain.vue';
 import { Icon } from '@iconify/vue';
@@ -82,7 +83,7 @@ import { Icon } from '@iconify/vue';
             </div>
         </div>
     </div>
-
+    <FooterMain/>
 </template>
 <style scoped>
     .container-input input::placeholder{
