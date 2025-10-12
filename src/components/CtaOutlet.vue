@@ -1,20 +1,16 @@
 <template>
-    <div class="w-full h-screen flex items-center">
-        <div class="flex flex-col lg:flex-row px-3 pt-5 lg:pt-0 lg:px-25">
-            <div class="lg:w-1/2 h-screen order-2 flex flex-col justify-center text-right w-fit">
-                <div class="">
-                    <h1 class="font-fredokaone text-primary">Pengalaman <br>langsung dimulai <br><span class="text-pink italic"> di sini</span></h1>
-                </div>
-                <div class="">
-                    <p class=" text-[#000000]">Kunjungi outlet terdekat untuk pengalaman dan produk terbaik</p>
-                </div>
-                <div class="">
-                  <button class="bg-[#FEDBE6] text-[#FF2C6D] font-fredokaone">Kunjungi Outlet!</button>               
-                </div>
+    <div class="w-full min-h-screen flex flex-col-reverse lg:flex-row items-center px-6 lg:px-90 bg-white">
+        <div class="left-container w-full lg:h-screen flex items-center">
+            <div class="">
+                <h1 class="font-fredokaone text-4xl font-bold text-primary mb-4">Pengalaman <br>Langsung dimulai <br><span class="text-pink text-5xl italic">di sini</span></h1>
+                <p class="text-[#000000] font-poppins">Kunjungi outlet terdekat untuk <span class="font-semibold">pengalaman</span> <br>dan <span class="font-semibold">produk terbaik</span></p>
+                <button class="bg-[#FEDBE6] font-bold rounded-sm font-poppins text-pink px-3 py-2 margin-top-20 mt-6">  Kunjungi Outlet!</button>
             </div>
         </div>
-        <div class="lg:w-1/2  order-1 lg:order-2 flex mb-10 lg:mb-0 items-center justify-center">
-           <img src="/public/outletcta.png" alt="" class="">
+        <div class="right-container w-full flex items-center">
+            <div class="">
+                <img src="/public/outletcta.png" alt="">
+            </div>
         </div>
     </div>
 </template>
