@@ -31,12 +31,13 @@
 <style scoped>
         .container {
             max-width: 1200px;
-            background: white;
             border-radius: 20px;
             padding: 60px;
             display: flex;
             align-items: center;
             gap: 80px;
+            justify-content: center;
+            margin-inline: auto;
         }
 
         .left-content {
