@@ -13,7 +13,7 @@ import { Icon } from '@iconify/vue';
                 <div class="py-3 px-5 mb-2 mt-1 justify-start self-start sm:justify-center">
                     <p class="bg-[#F9D3DE] w-fit mb-1 px-12 py-[7px] rounded-md text-pink font-medium font-poppins  md:order-2 sm:order-2">Kenapa RotiGokki?</p>
                 </div>
-                <div class="flex flex-col items-center text-center mb-2 py-1 px-3 m">
+                <div class="flex flex-col items-center text-center mb-2 py-1 px-3">
                     <p class="text-primary font-normal text-4xl lg:text-5xl font-fredokaone text-left">Nikmati rasa terbaik roti lembut & creamy kami.</p>
                 </div>
                 <div class="">
