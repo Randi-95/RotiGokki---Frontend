@@ -4,7 +4,7 @@ import { Icon } from '@iconify/vue';
 </script>
 
 <template>
-    <div class="w-full lg:px-10 px-3 flex items-center h-screen">
+    <div class="w-full lg:px-10 px-3 flex items-center lg:h-screen">
         <div class="w-full flex flex-col items-center mt-10 lg:flex-row sm:mb-0 gap-4">
             <div class="justify-center items-center flex-col flex lg:w-1/2  sm:order-0 md:order-0 lg:order-0 mb-10 lg:mb-0">
                 <img src="/public/why.png" alt="">

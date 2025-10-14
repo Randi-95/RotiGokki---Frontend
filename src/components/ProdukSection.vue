@@ -3,7 +3,7 @@ import { Icon } from '@iconify/vue';
 </script>
 
 <template>
-  <div class="w-full flex flex-col items-center px-4 py-10 mt-10">
+  <div class="w-full flex flex-col  items-center px-4 py-10 mt-10">
     <div class="flex flex-col items-center text-center mb-10">
       <div class="bg-[#F9D3DE] font-poppins w-fit mb-2 py-1 px-3 rounded-sm">
         <p class="text-pink font-medium text-sm sm:text-base">
