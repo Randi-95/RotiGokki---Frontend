@@ -1,5 +1,5 @@
 <template>
-    <div class="container lg:mt-0 mt-20">
+    <div class="container lg:mt-0 mt-20 h-screen">
         <div class="left-content order-2 lg:order-1">
             <h1 class="title font-fredokaone">Spesial Bundling<br>GOBOX Untukmu!</h1>
             <p class="subtitle font-poppins">Rasakan kelezatan roti berkualitas premium<br>dengan harga yang tetap bersahabat.</p>
@@ -46,11 +46,11 @@
         }
 
         .title {
-            font-size: 56px;
+            font-size: 50px;
             font-weight: 900;
             color: #1e5a96;
             line-height: 1.2;
-            margin-bottom: 30px;
+            margin-bottom: 16px;
         }
 
         .subtitle {
@@ -101,7 +101,7 @@
             color: white;
             font-size: 24px;
             font-weight: 900;
-            padding: 20px 60px;
+            padding: 14px 60px;
             border: none;
             cursor: pointer;
             width: 100%;
@@ -120,7 +120,7 @@
         }
 
         .product-image {
-            width: 100%;
+            width: 80%;
         }
 
         @media (max-width: 1024px) {

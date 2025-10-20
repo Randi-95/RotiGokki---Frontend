@@ -38,7 +38,7 @@ onUnmounted(() => {
       class="flex items-center relative bg-white w-full px-6 lg:w-4/5 justify-between mx-auto font-poppins"
     >
       <RouterLink to="/">
-        <img src="/public/Logo.png" alt="logo" class="w-30" />
+        <img src="/public/Logo.png" alt="logo" class="w-26" />
       </RouterLink>
 
       <div class="hidden lg:block">

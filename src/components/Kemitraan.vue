@@ -3,17 +3,17 @@ import { Icon } from '@iconify/vue';
 </script>
 
 <template>
-    <div class="w-full flex flex-col lg:flex-row py-12 px-3 lg:px-20"> 
+    <div class="w-full flex flex-col lg:flex-row py-12 px-3 lg:px-20 "> 
         <div class="lg:w-1/2 flex justify-center items-center">
             <img src="/public/kemitraan.png" alt="Promo Kemitraan Roti Gokki" class="max-h-full object-contain">
         </div>
 
-        <div class="lg:w-1/2 lg:pl-16 pt-8"> 
-            <h2 class="text-[#333333] font-fredokaone text-[30px] mb-12 leading-snug"> Bergabung Jadi Mitra Roti <span class="text-primary">Gokki</span>,<br class="hidden lg:block">Nikmati
+        <div class="lg:w-1/2 lg:pl-16 pt-2"> 
+            <h2 class="text-[#333333] font-fredokaone text-[30px] mb-6 leading-snug"> Bergabung Jadi Mitra Roti <span class="text-primary">Gokki</span>,<br class="hidden lg:block">Nikmati
                 <span class="text-pink">Keuntungannya!</span>
             </h2>
 
-            <div class="space-y-6">
+            <div class="space-y-2">
                 <div class="flex items-start gap-8">
                     <div class="rounded-[18px] text-pink p-5 bg-pink-100 flex justify-center items-center shrink-0">
                         <Icon icon ="solar:box-outline" class="w-7 h-7"></Icon>

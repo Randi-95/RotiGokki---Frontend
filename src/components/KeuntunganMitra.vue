@@ -3,7 +3,7 @@ import { Icon } from '@iconify/vue';
 </script>
 
 <template>
-  <section class="px-6 sm:px-10 lg:px-16 py-10">
+  <section class="px-6 sm:px-10 lg:px-16  h-screen">
     <div class="w-full flex flex-col items-center text-center">
       <div class="bg-[#F9D3DE] font-poppins w-fit mb-2 py-1 px-3 rounded-sm">
         <p class="text-pink font-medium text-sm sm:text-base">
@@ -15,7 +15,7 @@ import { Icon } from '@iconify/vue';
       </h1>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10 mt-10 mb-10 items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10 mt-4 mb-10 items-center">
       <div class="flex flex-col items-center lg:items-start">
         <img
           src="/public/fotoCabang.png"
@@ -30,8 +30,8 @@ import { Icon } from '@iconify/vue';
         </RouterLink>
       </div>
 
-      <div class="flex flex-col justify-between gap-10">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+      <div class="flex flex-col justify-between gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 sm:gap-8 lg:gap-5">
           <div class="flex items-center gap-4">
             <div class="bg-[#f1296825] w-fit p-4 rounded-[18px]">
               <Icon icon="lucide:store" class="w-6 h-6 text-pink" />

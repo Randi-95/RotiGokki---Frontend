@@ -110,7 +110,7 @@
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
+            gap: 0px;
             margin-bottom: 40px;
         }
 
@@ -149,7 +149,7 @@
         .contact-info {
             display: flex;
             align-items: flex-start;
-            gap: 15px;
+            gap: 0px;
             margin-bottom: 20px;
         }
 
@@ -201,7 +201,7 @@
 
             .footer-content {
                 grid-template-columns: 1fr;
-                gap: 35px;
+                gap: 0px;
             }
 
             .footer-section h3 {
@@ -214,7 +214,7 @@
             }
 
             .contact-info {
-                gap: 12px;
+                gap: 0px;
             }
         }
 
