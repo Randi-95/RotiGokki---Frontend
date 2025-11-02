@@ -1,3 +1,8 @@
+<script setup lang="ts">
+import { RouterLink } from 'vue-router';
+
+</script>
+
 <template>
     <div class="container lg:mt-0 mt-20 h-screen">
         <div class="left-content order-2 lg:order-1">
@@ -19,7 +24,7 @@
                 </div>
             </div>
             
-            <button class="cta-button font-bold border border-transparent rounded-md font-poppins">Pesan Sekarang</button>
+            <RouterLink to="/produk" class="cta-button font-bold border border-transparent rounded-md font-poppins">Pesan Sekarang</RouterLink>
         </div>
         
         <div class="right-content lg:order-2">

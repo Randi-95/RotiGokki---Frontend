@@ -14,10 +14,14 @@
   "dependencies": {
     "@iconify/vue": "^5.0.0",
     "@tailwindcss/vite": "^4.1.14",
+    "axios": "^1.12.2",
     "pinia": "^3.0.3",
+    "sweetalert2": "^11.26.3",
     "tailwindcss": "^4.1.14",
     "vue": "^3.5.22",
-    "vue-router": "^4.5.1"
+    "vue-awesome-paginate": "^1.2.0",
+    "vue-router": "^4.5.1",
+    "vue-sweetalert2": "^5.0.11"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.1",

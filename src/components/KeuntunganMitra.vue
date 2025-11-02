@@ -98,12 +98,12 @@ import { Icon } from '@iconify/vue';
               </div>
             </div>
 
-            <RouterLink
-              to=""
+            <a
+              href="https://wa.me/6281217275985"
               class="w-fit font-poppins text-sm sm:text-lg text-white bg-primary font-semibold px-6 py-2 rounded-sm mx-auto lg:mx-0"
             >
               Mulai Bisnis Roti Anda Sekarang
-            </RouterLink>
+            </a>
           </div>
         </div>
       </div>

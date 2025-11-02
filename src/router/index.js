@@ -5,6 +5,11 @@ import Login from '@/views/Login.vue'
 import Outlet from '@/views/Outlet.vue'
 import Produk from '@/views/Produk.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import DashboardBeranda from '@/views/DashboardBeranda.vue'
+import ProdukDetail from '@/views/ProdukDetail.vue'
+import DashboardProduk from '@/views/DashboardProduk.vue'
+import DashboardOutlet from '@/views/DashboardOutlet.vue'
+import DashboardPesanan from '@/views/DashboardPesanan.vue'
 
 
 const router = createRouter({
@@ -46,7 +51,52 @@ const router = createRouter({
       component: Login,
       meta: { layout: 'auth' },
     },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: DashboardBeranda,
+      meta: { requiresAuth : true }
+    },
+    {
+      path: '/dashboard-produk',
+      name: 'dashboard_produk',
+      component: DashboardProduk,
+      meta: { requiresAuth : true }
+    },
+    {
+      path: '/dashboard-outlet',
+      name: 'dashboard_outlet',
+      component: DashboardOutlet,
+      meta: { requiresAuth : true }
+    },
+    {
+      path: '/dashboard-pesanan',
+      name: 'dashboard_pesanan',
+      component: DashboardPesanan,
+      meta: { requiresAuth : true }
+    },
+    {
+      path: '/products/:id',
+      name: 'ProductDetail',
+      component: ProdukDetail,
+      props: true
+    }
   ],
+})
+
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    const token = localStorage.getItem('authToken');
+
+    if (token) {
+      next();
+    } else {
+      next('/');
+    }
+  } else {
+    next();
+  }
 })
 
 export default router

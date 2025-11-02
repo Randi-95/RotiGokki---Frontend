@@ -57,9 +57,9 @@ import { Icon } from '@iconify/vue';
 
             <div class="mt-5">
                 <div class="flex justify-center">
-                    <button class="font-fredokaone text-white bg-pink hover:bg-pink-700 transition-colors py-3 px-10 btn-mitra text-xl w-auto">
+                    <RouterLink to="/kemitraan" class="font-fredokaone text-white bg-pink hover:bg-pink-700 transition-colors py-3 px-10 btn-mitra text-xl w-auto">
                         Gabung Sekarang
-                    </button>
+                    </RouterLink>
                 </div>
             </div>
         </div>

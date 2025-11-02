@@ -9,7 +9,7 @@ import Keranjang from './layout/Keranjang.vue';
 const layouts = {
     main: MainLayout,
     auth: AuthLayout,
-    keranjang: Keranjang
+    keranjang: Keranjang,
 };
 
 const route = useRoute();

@@ -1,5 +1,33 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const backendUrl = 'http://127.0.0.1:8000'
+const products = ref([])
+const fetchProducts = async () => {
+  const response = await axios.get('http://127.0.0.1:8000/api/kategori/1/products')
+  console.log(response.data.data)
+  products.value = response.data.data
+}
+
+onMounted(() => {
+  fetchProducts()
+}) 
+
+const formatRupiah = (value) => {
+  if(!value) return 0;
+
+  return value.toLocaleString('id-ID')
+}
+
+const router = useRouter()
+
+const goToDetail = (id) => {
+  router.push(`/products/${id}`)
+}
+
 </script>
 
 <template>
@@ -19,26 +47,27 @@ import { Icon } from '@iconify/vue';
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-8 gap-x-6 lg:gap-x-10"
     >
     <div
-      v-for="i in 4"
-      :key="i"
-      class="flex flex-col relative py-4 shadow-xl rounded-3xl bg-[#FFF5E4] transition hover:-translate-y-1 hover:shadow-xl w-full max-w-[280px] sm:max-w-[230px] mx-auto"
+      v-for="product in products"
+      :key="product.id"
+      class="flex flex-col relative py-4 shadow-xl rounded-3xl bg-white transition hover:-translate-y-1 hover:shadow-xl w-full max-w-[280px] sm:max-w-[230px] mx-auto cursor-pointer"
+      @click="goToDetail(product.id)"
     >
       <img
-        src="/public//go coffe.png"
+        :src="`${backendUrl}${product.image_url}`"
         alt="Roti Gokki"
         class="w-[300px] sm:w-[180px] lg:w-[200px] -translate-y-6 mx-auto"
       />
       <div class="px-4 text-left">
         <h1 class="text-[#333333] font-fredokaone font-medium text-2xl">
-          Roti Gokki Go Choco
+          {{ product.nama }}
         </h1>
-        <p class="font-poppins text-[10px] teks-md text-gray-600">
-          Lelehan krim cokelat mewah yang lumer tak tertahankan di setiap gigitan.
+        <p class="font-poppins text-[10px] teks-md text-gray-600 h-12">
+          {{ product.deskripsi }}
         </p>
       </div>
 
       <div class="flex items-center w-full mt-4 px-4 justify-between">
-        <p class="font-bold font-poppins text-xl">Rp. 3.500</p>
+        <p class="font-bold font-poppins text-xl">Rp. {{ formatRupiah(product.price) }}</p>
         <div
           class="w-[40px] h-[38px] sm:w-[50px] sm:h-[46px] bg-pink flex items-center button-keranjang justify-center p-2 absolute right-0 bottom-0"
         >

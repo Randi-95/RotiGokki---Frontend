@@ -52,14 +52,15 @@ onUnmounted(() => {
 
       <div class="lg:flex hidden items-center gap-4">
         <RouterLink to="/keranjang">
-          <img src="/public/Vector.svg" alt="" class="bg-[#ECE8E8] p-2 rounded-sm" />
+          <img src="/public/Vector.svg" alt="" class="bg-[#ECE8E8] w-10 p-1  rounded-sm" />
         </RouterLink>
-        <RouterLink
-          to=""
-          class="bg-primary text-white px-6 py-3 font-medium rounded-md flex items-center justify-center"
-        >
-          <p class="text-xs">Hubungi Kami</p>
-        </RouterLink>
+        <a href="https://wa.me/6281217275985"
+              to=""
+              class="bg-primary w-full text-white px-2 py-2 font-medium rounded-md flex gap-2 items-center justify-center"
+            >
+              <Icon icon="line-md:phone" class="text-white w-6 h-6" />
+              <p class="text-xs">Hubungi Kami</p>
+        </a>
       </div>
 
       <transition name="slide">
@@ -86,15 +87,15 @@ onUnmounted(() => {
           </div>
 
           <div class="lg:hidden flex items-center gap-4 pt-4 border-t border-gray-300 px-2">
-            <RouterLink
+            <a href="https://wa.me/6281217275985"
               to=""
-              class="bg-primary w-full text-white px-6 py-3 font-medium rounded-md flex gap-2 items-center justify-center"
+              class="bg-primary w-full text-white  font-medium rounded-md flex gap-2 items-center justify-center"
             >
               <Icon icon="line-md:phone" class="text-white w-6 h-6" />
               <p class="text-xs">Hubungi Kami</p>
-            </RouterLink>
+            </a>
             <RouterLink to="/keranjang">
-              <Icon icon="icon-park-outline:shopping" class="text-black w-10 h-10 bg-gray-300 p-2 rounded-md" />
+              <Icon icon="icon-park-outline:shopping" class="text-black w-15 h-15 bg-gray-300 p-2 rounded-md" />
             </RouterLink>
           </div>
         </div>
