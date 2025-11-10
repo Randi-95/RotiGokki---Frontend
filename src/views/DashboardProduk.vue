@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
@@ -41,6 +41,15 @@ const editingProduct = ref({
 
 const toggleSidebar = () => isSidebarOpen.value = !isSidebarOpen.value;
 const closeSidebar = () => isSidebarOpen.value = false;
+
+const adminUser = computed(() => {
+  // (Ini sudah benar, Anda menggunakan 'data_admin_saya')
+  const adminData = localStorage.getItem('data_admin_saya');
+  if (adminData) {
+    return JSON.parse(adminData);
+  }
+  return { role: null, outlet_id: null };
+});
 
 const handleLogout = async () => {
   const token = localStorage.getItem('authToken');
@@ -233,19 +242,23 @@ onMounted(() => {
               </button>
             </div>
             <div class="px-4 flex-col flex gap-1 mt-10">
-              <RouterLink to="/dashboard" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins">
+              <RouterLink to="/dashboard" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins" v-if="adminUser.role === 'superadmin'">
                 <Icon icon="material-symbols:dashboard-outline-rounded" class="text-xl"/>
                 <h2 class="font-medium text-[16px]">Dashboard</h2>
               </RouterLink>
-              <RouterLink to="/dashboard-produk" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
+              <RouterLink to="/dashboard-produk" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]" v-if="adminUser.role === 'superadmin'">
                 <Icon icon="gridicons:product" class="text-xl"/>
                 <h2 class="font-medium text-[16px]">Manajemen Produk</h2>
               </RouterLink>
-              <RouterLink to="/dashboard-outlet" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
+              <RouterLink to="/dashboard-outlet" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]" v-if="adminUser.role === 'superadmin'">
                 <Icon icon="solar:shop-outline" class="text-xl"/>
                 <h2 class="font-medium text-[16px]">Manajemen Outlet</h2>
               </RouterLink>
-              <RouterLink to="/dashboard-pesanan" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
+              <RouterLink to="/dashboard-stok" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
+                <Icon icon="mdi:cube-outline" class="text-xl"/>
+                <h2 class="font-medium text-[16px]">Manajemen Stok</h2>
+              </RouterLink>
+              <RouterLink to="/dashboard-pesanan" @click="closeSidebar"  active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
                 <Icon icon="ic:outline-shopping-bag" class="text-xl"/>
                 <h2 class="font-medium text-[16px]">Pesanan</h2>
               </RouterLink>
@@ -270,7 +283,7 @@ onMounted(() => {
         <h1 class="lg:hidden font-fredokaone text-[#0F4B7D] font-normal text-2xl absolute left-1/2 -translate-x-1/2">
           Dashboard
         </h1>
-        <p class="text-gray-600 text-sm sm:text-base">Selamat datang, Admin!</p>
+        <p class="text-gray-600 text-sm sm:text-base">Selamat datang, {{ adminUser.name }}</p>
       </header>
 
       <main class="flex-1 p-6 sm:p-8">
@@ -289,7 +302,6 @@ onMounted(() => {
                   <th scope="col" class="px-6 py-3 whitespace-nowrap">Foto</th>
                   <th scope="col" class="px-6 py-3 whitespace-nowrap">Nama Produk</th>
                   <th scope="col" class="px-6 py-3 whitespace-nowrap">Kategori</th>
-                  <th scope="col" class="px-6 py-3 whitespace-nowrap">Stok</th>
                   <th scope="col" class="px-6 py-3 whitespace-nowrap">Harga</th>
                   <th scope="col" class="px-6 py-3 whitespace-nowrap">Aksi</th>
                 </tr>
@@ -311,7 +323,6 @@ onMounted(() => {
                   <td class="px-6 py-4">
                     {{ product.kategori.name }}
                   </td>
-                  <td class="px-6 py-4">{{ product.stock }}</td>
                   <td class="px-6 py-4">Rp {{ Number(product.price).toLocaleString('id-ID') }}</td>
                   <td class="px-6 py-4">
                     <div class="flex items-center gap-4">

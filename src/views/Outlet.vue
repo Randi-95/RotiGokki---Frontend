@@ -5,6 +5,7 @@ import FooterMain from '@/components/FooterMain.vue';
 import JudulOutlet from '@/components/JudulOutlet.vue';
 import NavbarMain from '@/components/NavbarMain.vue';
 import { Icon } from '@iconify/vue';
+import { useRouter } from 'vue-router';
 
 const API_BASE_URL = 'http://127.0.0.1:8000/api';
 
@@ -15,7 +16,7 @@ const outletData = ref({
 const cities = ref([]);
 const searchQuery = ref('');
 const selectedCity = ref('');
-
+const router = useRouter()
 const isLoading = ref(false);
 const error = ref(null);
 
@@ -56,6 +57,18 @@ const fetchCities = async () => {
   } catch (error) {
     console.error('Gagal mengambil data kota:', error);
   }
+};
+
+const pilihOutletIni = (outlet) => {
+  const dataToStore = {
+    id: outlet.id,
+    nama: outlet.nama
+  };
+
+  localStorage.setItem('selectedOutlet', JSON.stringify(dataToStore));
+  localStorage.removeItem('shoppingCart');
+  
+  router.push('/produk'); 
 };
 
 onMounted(() => {
@@ -145,7 +158,13 @@ onMounted(() => {
                 </div>
             </div>
 
-            <div class="flex gap-2 mt-10">
+            <button 
+            @click="pilihOutletIni(outlet)"
+            class="bg-primary w-full px-4 py-3 mt-8 flex gap-2 border border-transparent rounded-sm justify-center text-white font-poppins font-bold hover:bg-opacity-90 transition-colors">
+            Pesan dari Outlet Ini
+            </button>
+
+            <div class="flex gap-2 mt-2">
                 <a :href="`${outlet.link_map}`" class="bg-primary w-full px-4 py-2 flex gap-2 border border-transparent rounded-sm justify-center">
                     <Icon 
                         icon="fa7-solid:diamond-turn-right" 

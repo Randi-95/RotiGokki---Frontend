@@ -1,19 +1,18 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'; 
+import { computed, onMounted, ref, watch } from 'vue'; 
 import { Icon } from '@iconify/vue';
 import axios from 'axios';
 import { RouterLink, useRouter } from 'vue-router';
+import Swal from 'sweetalert2'; // <-- Saya tambahkan ini untuk mengganti alert/confirm
 
 const pesanans = ref([]); 
 const paginationData = ref(null);
 const loading = ref(true);
 const error = ref(null);
 
-
-const router = useRouter()
-
+const router = useRouter();
 const isSidebarOpen = ref(false); 
-const statsOrders = ref([])
+const statsOrders = ref({}); // <-- Diubah ke Object
 
 const isDetailModalOpen = ref(false);
 const selectedPesanan = ref(null);
@@ -28,9 +27,44 @@ const filterStatus = ref('');
 const filterDate = ref('');
 let debounceTimer = null; 
 
+const allOutlets = ref([]); 
+const filterOutletId = ref('');
+
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    handleLogout(); 
+    return null;
+  }
+  return { 'Authorization': `Bearer ${token}` };
+};
 function formatNomor(nomor) {
+  if (!nomor) return '';
   return nomor.replace(/^0/, "62");
 }
+
+const adminUser = computed(() => {
+  const adminData = localStorage.getItem('data_admin_saya');
+  if (adminData) {
+    return JSON.parse(adminData);
+  }
+  return { role: null, outlet_id: null };
+});
+
+const fetchAllOutlets = async () => {
+  if (adminUser.value.role !== 'superadmin') return; 
+  try {
+    const headers = getAuthHeaders();
+
+    console.log(headers);
+    if (!headers) return; 
+    
+    const response = await axios.get(`http://127.0.0.1:8000/api/outlets/list-all`, { headers });
+    allOutlets.value = response.data;
+  } catch (err) {
+    console.error('Gagal mengambil daftar outlet:', err);
+  }
+};
 
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
@@ -38,7 +72,6 @@ const toggleSidebar = () => {
 const closeSidebar = () => {
   isSidebarOpen.value = false;
 };
-
 const formatDate = (dateString) => {
   if (!dateString) return '-';
   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -73,6 +106,14 @@ const getStatusClass = (status) => {
 const fetchPesanans = async (page = 1) => {
   loading.value = true;
   error.value = null;
+  
+  const headers = getAuthHeaders(); 
+  if (!headers) {
+      loading.value = false;
+      error.value = "Autentikasi gagal. Silakan login kembali.";
+      return; 
+  }
+  
   try {
     const params = new URLSearchParams({
       page: page
@@ -87,31 +128,50 @@ const fetchPesanans = async (page = 1) => {
     if (filterDate.value) {
       params.append('date', filterDate.value);
     }
+    
+    // --- BARU: Tambahkan filter outlet jika Superadmin ---
+    if (adminUser.value.role === 'superadmin' && filterOutletId.value) {
+      params.append('outlet_id', filterOutletId.value);
+    }
+    // --- AKHIR BARU ---
 
-    const response = await axios.get(`http://127.0.0.1:8000/api/orders?${params.toString()}`);
-    console.log(response.data.data)
+    const response = await axios.get(`http://127.0.0.1:8000/api/orders?${params.toString()}`, {
+      headers: headers // <-- PERBAIKAN 2
+    });
+    
     pesanans.value = response.data.data;
     paginationData.value = response.data; 
   } catch (err) {
     console.error('Gagal fetch data pesanan:', err);
-    error.value = err.message || 'Gagal mengambil data dari server.';
+    error.value = err.response?.data?.message || err.message || 'Gagal mengambil data dari server.';
   } finally {
     loading.value = false;
   }
 };
 
 const fetchStatsPesanan = async () => {
-  const response = await axios.get(`http://127.0.0.1:8000/api/statistik`);
-  statsOrders.value = response.data
+  const headers = getAuthHeaders(); 
+  if (!headers) return; 
+  
+  try {
+    const response = await axios.get(`http://127.0.0.1:8000/api/statistik`, { headers }); // <-- PERBAIKAN 4
+    statsOrders.value = response.data;
+  } catch (err) {
+    console.error('Gagal fetch statistik:', err);
+    statsOrders.value = { pesananHariIni: 0, mengungguPembayaran: 0, perluDiProses: 0 };
+  }
 }
  
 const fetchPesananDetails = async (id) => {
   detailLoading.value = true;
   detailError.value = null;
+  
+  const headers = getAuthHeaders(); // <-- PERBAIKAN 5
+  if (!headers) return;
+  
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/api/orders/${id}`);
+    const response = await axios.get(`http://127.0.0.1:8000/api/orders/${id}`, { headers }); // <-- PERBAIKAN 6
     selectedPesanan.value = response.data;
-    console.log(response.data)
     selectedStatus.value = response.data.status; 
   } catch (err) {
     console.error('Gagal fetch detail pesanan:', err);
@@ -138,22 +198,22 @@ const updateStatus = async () => {
 
   isUpdating.value = true;
   updateError.value = null;
-
   const id = selectedPesanan.value.id;
   const newStatus = selectedStatus.value;
   
-  console.log(`Mengupdate status pesanan ${id} menjadi ${newStatus}`);
-
+  const headers = getAuthHeaders(); 
+  if (!headers) return;
+  
   try {
     await axios.patch(`http://127.0.0.1:8000/api/orders/${id}/status`, {
       status: newStatus
+    }, {
+      headers: headers 
     });
     
     closeDetailModal();
-    
     fetchPesanans(paginationData.value?.current_page || 1);
-
-    fetchStatsPesanan()
+    fetchStatsPesanan();
     
   } catch (err) {
     console.error('Gagal update status:', err);
@@ -170,28 +230,42 @@ const updateStatus = async () => {
 };
 
 const cancelPesanan = async (pesanan) => {
+  const headers = getAuthHeaders(); 
+  if (!headers) return;
+  
   try {
-    const response = await axios.post(`http://127.0.0.1:8000/api/pesanan/${pesanan.id}/cancel`);
+    const response = await axios.post(`http://127.0.0.1:8000/api/pesanan/${pesanan.id}/cancel`, 
+      {}, 
+      { headers }
+    );
     const index = pesanans.value.findIndex(p => p.id === pesanan.id);
     if (index !== -1) {
       pesanans.value[index].status = 'Dibatalkan';
     }
-
     fetchStatsPesanan();
-
-    alert(response.data.message || 'Pesanan berhasil dibatalkan.');
-
+    Swal.fire('Berhasil', response.data.message || 'Pesanan berhasil dibatalkan.', 'success'); 
   } catch (err) {
     console.error('Gagal membatalkan pesanan:', err);
     const errorMessage = err.response?.data?.message || 'Terjadi kesalahan saat membatalkan.';
-    alert(`Gagal: ${errorMessage}`);
+    Swal.fire('Gagal', `Gagal: ${errorMessage}`, 'error'); 
   }
 };
 
 const confirmCancelPesanan = (pesanan) => {
-  if (confirm(`Anda yakin ingin membatalkan pesanan INV-${pesanan.id}? Stok akan dikembalikan ke sistem.`)) {
-    cancelPesanan(pesanan);
-  }
+  Swal.fire({
+    title: 'Anda yakin?',
+    text: `Batalkan pesanan INV-${pesanan.id}? Stok akan dikembalikan.`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Ya, batalkan!',
+    cancelButtonText: 'Tidak'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      cancelPesanan(pesanan);
+    }
+  });
 };
 
 const changePage = (page) => {
@@ -208,7 +282,6 @@ const handleLogout = async () => {
     router.push('/'); 
     return;
   }
-
   try {
     await axios.post('http://127.0.0.1:8000/api/logout', {}, {
       headers: {
@@ -219,6 +292,7 @@ const handleLogout = async () => {
     console.error("Gagal logout dari server:", error);
   } finally {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('data_admin_saya'); 
     router.push('/');
   }
 };
@@ -226,9 +300,10 @@ const handleLogout = async () => {
 onMounted(() => {
   fetchPesanans(); 
   fetchStatsPesanan();
+  fetchAllOutlets();
 });
 
-watch([searchQuery, filterStatus, filterDate], () => {
+watch([searchQuery, filterStatus, filterDate, filterOutletId], () => {
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(() => {
     fetchPesanans(1); 
@@ -241,11 +316,7 @@ watch(isDetailModalOpen, (isOpen) => {
     detailError.value = null;
     updateError.value = null; 
   }
-
-
-
 });
-
 </script>
 
 <template>
@@ -266,17 +337,21 @@ watch(isDetailModalOpen, (isOpen) => {
             </button>
           </div>
           <div class="px-4 flex-col flex gap-1 mt-10">
-            <RouterLink to="/dashboard" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins">
+            <RouterLink to="/dashboard" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins" v-if="adminUser.role === 'superadmin'">
               <Icon icon="material-symbols:dashboard-outline-rounded" class="text-xl"/>
               <h2 class="font-medium text-[16px]">Dashboard</h2>
             </RouterLink>
-            <RouterLink to="/dashboard-produk" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
+            <RouterLink to="/dashboard-produk" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]" v-if="adminUser.role === 'superadmin'">
               <Icon icon="gridicons:product" class="text-xl"/>
               <h2 class="font-medium text-[16px]">Manajemen Produk</h2>
             </RouterLink>
-            <RouterLink to="/dashboard-outlet" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
+            <RouterLink to="/dashboard-outlet" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]" v-if="adminUser.role === 'superadmin'">
               <Icon icon="solar:shop-outline" class="text-xl"/>
               <h2 class="font-medium text-[16px]">Manajemen Outlet</h2>
+            </RouterLink>
+            <RouterLink to="/dashboard-stok" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
+              <Icon icon="mdi:cube-outline" class="text-xl"/>
+              <h2 class="font-medium text-[16px]">Manajemen Stok</h2>
             </RouterLink>
             <RouterLink to="/dashboard-pesanan" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
               <Icon icon="ic:outline-shopping-bag" class="text-xl"/>
@@ -303,7 +378,7 @@ watch(isDetailModalOpen, (isOpen) => {
         <h1 class="lg:hidden font-fredokaone text-[#0F4B7D] font-normal text-2xl absolute left-1/2 -translate-x-1/2">
           Dashboard
         </h1>
-        <p class="text-gray-600 text-sm sm:text-base">Selamat datang, Admin!</p>
+        <p class="text-gray-600 text-sm sm:text-base">Selamat datang, {{ adminUser.name }}</p>
       </header>
 
       <main class="flex-1 p-6 sm:p-8">
@@ -342,11 +417,12 @@ watch(isDetailModalOpen, (isOpen) => {
 
         <div class="bg-white rounded-xl shadow p-4 mb-6">
           <div class="flex flex-col md:flex-row items-center gap-4">
+            
             <div class="relative w-full md:flex-grow">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Icon icon="mdi:magnify" class="text-gray-400 text-xl" />
               </div>
-              <input 
+               <input 
                 type="text" 
                 v-model="searchQuery" 
                 placeholder="Cari ID Pesanan"
@@ -365,7 +441,7 @@ watch(isDetailModalOpen, (isOpen) => {
                 <option>Dibatalkan</option>
                 <option>Selesai</option>
               </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+               <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                 <Icon icon="mdi:chevron-down" class="text-xl" />
               </div>
             </div>
@@ -383,6 +459,22 @@ watch(isDetailModalOpen, (isOpen) => {
                 class="w-full md:w-48 block pr-10 pl-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               >
             </div>
+
+            <div v-if="adminUser.role === 'superadmin'" class="relative w-full md:w-auto">
+              <select 
+                v-model="filterOutletId"
+                class="w-full md:w-48 block appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-md leading-tight focus:outline-none focus:bg-white focus:border-blue-500 sm:text-sm"
+              >
+                <option value="">Semua Outlet</option>
+                <option v-for="outlet in allOutlets" :key="outlet.id" :value="outlet.id">
+                  {{ outlet.nama }}
+                </option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <Icon icon="mdi:chevron-down" class="text-xl" />
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -535,6 +627,10 @@ watch(isDetailModalOpen, (isOpen) => {
                 <label class="block text-xs text-gray-500 mb-1">Alamat</label>
                 <p class="font-medium text-gray-800">{{ selectedPesanan.shipping_address }}</p>
               </div>
+              <div class="col-span-2">
+                <label class="block text-xs text-gray-500 mb-1">Dipesan dari Outlet</label>
+                <p class="font-medium text-gray-800">{{ selectedPesanan.outlet ? selectedPesanan.outlet.nama : 'Data Outlet Tidak Tersedia' }}</p>
+              </div>
             </div>
             <div class="mb-4">
               <table class="w-full text-left text-sm">
@@ -549,7 +645,7 @@ watch(isDetailModalOpen, (isOpen) => {
                 <tbody>
                   <tr v-for="item in selectedPesanan.details" :key="item.id" class="border-b">
                     <td class="p-3">
-                      {{ item.product.nama}}
+                      {{ item.product ? item.product.nama : 'Produk Dihapus' }}
                     </td>
                     <td class="p-3">{{ formatCurrency(item.price) }}</td>
                     <td class="p-3 text-center">{{ item.quantity }}</td>
@@ -572,7 +668,7 @@ watch(isDetailModalOpen, (isOpen) => {
                   <select v-model="selectedStatus" id="status" class="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     <option value="Pending">Pending</option>
                     <option value="Proses">Diproses</option>
-                    <option value="Selesai">Selesai</option>
+                    <option valueA="Selesai">Selesai</option>
                   </select>
                 </div>
                 <div class="flex gap-2 items-center">
@@ -601,4 +697,3 @@ watch(isDetailModalOpen, (isOpen) => {
     </div>
   </div>
 </template>
-

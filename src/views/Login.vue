@@ -24,6 +24,7 @@ const handleLogin = async () => {
 
 
     localStorage.setItem('authToken', response.data.authToken);
+localStorage.setItem('data_admin_saya', JSON.stringify(response.data.user));
 
     router.push('/dashboard');
 

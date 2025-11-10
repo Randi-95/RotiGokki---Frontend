@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
@@ -34,6 +34,14 @@ const editingOutlet = ref({
     jam: '',
     nomor_telepon: null,
     link_map: ''
+});
+
+const adminUser = computed(() => {
+  const adminData = localStorage.getItem('data_admin_saya');
+  if (adminData) {
+    return JSON.parse(adminData);
+  }
+  return { role: null, outlet_id: null };
 });
 
 const toggleSidebar = () => isSidebarOpen.value = !isSidebarOpen.value;
@@ -181,18 +189,22 @@ onMounted(() => {
               </button>
             </div>
             <div class="px-4 flex-col flex gap-1 mt-10">
-              <RouterLink to="/dashboard" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins">
+              <RouterLink to="/dashboard" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins" v-if="adminUser.role === 'superadmin'">
                 <Icon icon="material-symbols:dashboard-outline-rounded" class="text-xl"/>
                 <h2 class="font-medium text-[16px]">Dashboard</h2>
               </RouterLink>
-              <RouterLink to="/dashboard-produk" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
+              <RouterLink to="/dashboard-produk" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]" v-if="adminUser.role === 'superadmin'">
                 <Icon icon="gridicons:product" class="text-xl"/>
                 <h2 class="font-medium text-[16px]">Manajemen Produk</h2>
               </RouterLink>
-              <RouterLink to="/dashboard-outlet" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
+              <RouterLink to="/dashboard-outlet" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]" v-if="adminUser.role === 'superadmin'">
                 <Icon icon="solar:shop-outline" class="text-xl"/>
                 <h2 class="font-medium text-[16px]">Manajemen Outlet</h2>
               </RouterLink>
+              <RouterLink to="/dashboard-stok" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
+              <Icon icon="mdi:cube-outline" class="text-xl"/>
+              <h2 class="font-medium text-[16px]">Manajemen Stok</h2>
+            </RouterLink>
               <RouterLink to="/dashboard-pesanan" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
                 <Icon icon="ic:outline-shopping-bag" class="text-xl"/>
                 <h2 class="font-medium text-[16px]">Pesanan</h2>
@@ -218,7 +230,7 @@ onMounted(() => {
         <h1 class="lg:hidden font-fredokaone text-[#0F4B7D] font-normal text-2xl absolute left-1/2 -translate-x-1/2">
           Dashboard
         </h1>
-        <p class="text-gray-600 text-sm sm:text-base">Selamat datang, Admin!</p>
+        <p class="text-gray-600 text-sm sm:text-base">Selamat datang, {{ adminUser.name }}</p>
       </header>
 
       <main class="flex-1 p-6 sm:p-8">
@@ -234,6 +246,7 @@ onMounted(() => {
             <table class="w-full text-sm text-left text-gray-600">
               <thead class="text-xs text-gray-700 uppercase bg-[#DFDFDF]">
                 <tr>
+                  <th scope="col" class="px-6 py-3 whitespace-nowrap">ID</th>
                   <th scope="col" class="px-6 py-3 whitespace-nowrap">Nama Outlet</th>
                   <th scope="col" class="px-6 py-3 whitespace-nowrap">Alamat</th>
                   <th scope="col" class="px-6 py-3 whitespace-nowrap">Kota</th>
@@ -250,6 +263,9 @@ onMounted(() => {
                     <td colspan="6" class="text-center py-8 text-red-500">Gagal memuat data: {{ error }}</td>
                 </tr>
                 <tr v-else v-for="outlet in outlets" :key="outlet.id" class="bg-white border-b border-gray-200 hover:bg-gray-50">
+                  <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {{ outlet.id }}
+                  </td>
                   <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     {{ outlet.nama }}
                   </td>

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import axios from 'axios';
 import { RouterLink, useRouter } from 'vue-router';
@@ -11,6 +11,16 @@ const totalKategori = ref()
 const totalProdukPerKategori = ref([])
 const pesanans = ref([])
 const router = useRouter()
+
+
+
+const adminUser = computed(() => {
+  const adminData = localStorage.getItem('data_admin_saya');
+  if (adminData) {
+    return JSON.parse(adminData);
+  }
+  return { role: null, outlet_id: null };
+});
 
 const getStatusClass = (status) => {
   if (status === 'Pending') {
@@ -74,6 +84,11 @@ const fetchPesanan = async () => {
 }
 
 onMounted(() => {
+  if (adminUser.value.role === 'admin_outlet') {
+    router.replace('/dashboard-stok'); 
+    
+    return; 
+  }
   fetchPesanan()
   fetchTotalProduk()
   fetchTotalOutlet()
@@ -135,22 +150,27 @@ const handleLogout = async () => {
           </div>
 
            <div class="px-4 flex-col flex gap-1 mt-10">
-            <RouterLink to="/dashboard" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins">
+            <RouterLink to="/dashboard" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins" v-if="adminUser.role === 'superadmin'">
               <Icon icon="material-symbols:dashboard-outline-rounded" class="text-xl"/>
               <h2 class="font-medium text-[16px]">Dashboard</h2>
             </RouterLink>
             
-            <RouterLink to="/dashboard-produk" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
+            <RouterLink to="/dashboard-produk" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]" v-if="adminUser.role === 'superadmin'">
               <Icon icon="gridicons:product" class="text-xl"/>
               <h2 class="font-medium text-[16px]">Manajemen Produk</h2>
             </RouterLink>
 
-            <RouterLink to="/dashboard-outlet" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
+            <RouterLink to="/dashboard-outlet" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]" v-if="adminUser.role === 'superadmin'">
               <Icon icon="solar:shop-outline" class="text-xl"/>
               <h2 class="font-medium text-[16px]">Manajemen Outlet</h2>
             </RouterLink>
 
-            <RouterLink to="/dashboard-pesanan" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
+            <RouterLink to="/dashboard-stok" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
+              <Icon icon="mdi:cube-outline" class="text-xl"/>
+              <h2 class="font-medium text-[16px]">Manajemen Stok</h2>
+            </RouterLink>
+
+            <RouterLink to="/dashboard-pesanan"  @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
               <Icon icon="ic:outline-shopping-bag" class="text-xl"/>
               <h2 class="font-medium text-[16px]">Pesanan</h2>
             </RouterLink>
@@ -187,7 +207,7 @@ const handleLogout = async () => {
           Dashboard
         </h1>
 
-        <p class="text-gray-600 text-sm sm:text-base">Selamat datang, Admin!</p>
+        <p class="text-gray-600 text-sm sm:text-base">Selamat datang, {{ adminUser.name }}</p>
       </header>
 
       <main class="flex-1 p-6 sm:p-8">

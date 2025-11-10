@@ -10,6 +10,7 @@ import ProdukDetail from '@/views/ProdukDetail.vue'
 import DashboardProduk from '@/views/DashboardProduk.vue'
 import DashboardOutlet from '@/views/DashboardOutlet.vue'
 import DashboardPesanan from '@/views/DashboardPesanan.vue'
+import ManajemenStok from '@/views/ManajemenStok.vue'
 
 
 const router = createRouter({
@@ -73,6 +74,12 @@ const router = createRouter({
       path: '/dashboard-pesanan',
       name: 'dashboard_pesanan',
       component: DashboardPesanan,
+      meta: { requiresAuth : true }
+    },
+    {
+      path: '/dashboard-stok',
+      name: 'dashboard_stok',
+      component: ManajemenStok,
       meta: { requiresAuth : true }
     },
     {

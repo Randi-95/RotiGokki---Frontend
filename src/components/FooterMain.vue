@@ -85,12 +85,7 @@ import { RouterLink } from 'vue-router';
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+
 
         .content {
             flex: 1;

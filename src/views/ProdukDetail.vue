@@ -34,18 +34,37 @@ import { useRoute, useRouter } from 'vue-router';
 
     const goBack = () => {
          if (window.history.length > 1) {
-        router.go(-1)
-        } else {
+            router.go(-1)
+         } else {
             router.push('/') 
-        }
+         }
     }
 
     const addToCart = () => {
-        if (!product.value || !product.value.id) {
-            alert("Data produk belum dimuat, silakan coba lagi.");
-            return;
+        const selectedOutletString = localStorage.getItem('selectedOutlet');
+        
+        if (!selectedOutletString) {
+            Swal.fire({
+                title: "Outlet Belum Dipilih",
+                text: "Anda harus memilih outlet terlebih dahulu sebelum menambah pesanan.",
+                icon: 'warning',
+                confirmButtonText: 'Pilih Outlet Sekarang'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    router.push('/outlet'); 
+                }
+            });
+            return; 
         }
 
+        if (!product.value || !product.value.id) {
+            Swal.fire({
+                title: "Error",
+                text: "Data produk belum dimuat, silakan coba lagi.",
+                icon: 'error'
+            });
+            return;
+        }
         const existingItem = keranjang.value.find(item => item.id === product.value.id);
 
         if (existingItem) {
@@ -66,9 +85,8 @@ import { useRoute, useRouter } from 'vue-router';
         router.push('/keranjang');
     };
 
-
     watch(keranjang, (nilaiKeranjangBaru) => {
-    localStorage.setItem('shoppingCart', JSON.stringify(nilaiKeranjangBaru));
+        localStorage.setItem('shoppingCart', JSON.stringify(nilaiKeranjangBaru));
     }, { deep: true });
 
     const jumlahPesanan = ref(1)
@@ -91,7 +109,6 @@ import { useRoute, useRouter } from 'vue-router';
         return 0
     })
 </script>
-
 
 
 <template>
