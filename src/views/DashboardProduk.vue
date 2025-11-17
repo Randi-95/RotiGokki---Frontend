@@ -23,7 +23,6 @@ const newProduct = ref({
     nama: '',
     deskripsi: '',
     price: null,
-    stock: null,
     category_id: '',
     image: null
 });
@@ -33,7 +32,6 @@ const editingProduct = ref({
     nama: '',
     deskripsi: '',
     price: null,
-    stock: null,
     category_id: '',
     image: null,
     current_image_url: ''
@@ -415,15 +413,6 @@ onMounted(() => {
               />
             </div>
             <div class="mb-5">
-              <label class="block text-gray-700 font-medium mb-2 text-sm">Stok</label>
-              <input 
-                v-model.number="newProduct.stock"
-                type="number" 
-                placeholder="Contoh: 50" 
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div class="mb-5">
               <label class="block text-gray-700 font-medium mb-2 text-sm">Kategori Produk</label>
               <select v-model="newProduct.category_id" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
                 <option disabled value="">Pilih Kategori</option>
@@ -482,14 +471,6 @@ onMounted(() => {
               <label class="block text-gray-700 font-medium mb-2 text-sm">Harga</label>
               <input 
                 v-model.number="editingProduct.price"
-                type="number" 
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div class="mb-5">
-              <label class="block text-gray-700 font-medium mb-2 text-sm">Stok</label>
-              <input 
-                v-model.number="editingProduct.stock"
                 type="number" 
                 class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
