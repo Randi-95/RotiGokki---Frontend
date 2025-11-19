@@ -10,6 +10,7 @@ import ProdukDetail from '@/views/ProdukDetail.vue'
 import DashboardProduk from '@/views/DashboardProduk.vue'
 import DashboardOutlet from '@/views/DashboardOutlet.vue'
 import DashboardPesanan from '@/views/DashboardPesanan.vue'
+import DashboardCategory from '@/views/DashboardCategory.vue'
 import DashboardUser from '@/views/DashboardUser.vue'
 import ManajemenStok from '@/views/ManajemenStok.vue'
 
@@ -69,6 +70,12 @@ const router = createRouter({
       path: '/dashboard-outlet',
       name: 'dashboard_outlet',
       component: DashboardOutlet,
+      meta: { requiresAuth : true }
+    },
+    {
+      path: '/dashboard-kategori',
+      name: 'dashboard_kategori',
+      component: DashboardCategory,
       meta: { requiresAuth : true }
     },
     {

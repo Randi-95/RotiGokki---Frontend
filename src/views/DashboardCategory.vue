@@ -8,26 +8,18 @@ import { RouterLink, useRouter } from 'vue-router';
 const API_BASE_URL = 'http://127.0.0.1:8000/api';
 
 const isSidebarOpen = ref(false);
-const users = ref([]);
+const categories = ref([]);
 const paginationData = ref(null);
 const searchQuery = ref('');
-const selectedOutletId = ref('');
-const allOutlets = ref([]);
 const isLoading = ref(true);
 const error = ref(null);
 const showAddModal = ref(false);
+const showEditModal = ref(false);
 const isSubmitting = ref(false);
+const selectedCategory = ref(null);
 const debounceTimer = ref(null);
 
 const router = useRouter();
-
-const newUser = ref({
-  name: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-  outlet_id: ''
-});
 
 const adminUser = computed(() => {
   const adminData = localStorage.getItem('data_admin_saya');
@@ -35,6 +27,14 @@ const adminUser = computed(() => {
     return JSON.parse(adminData);
   }
   return { role: null, outlet_id: null };
+});
+
+const newCategory = ref({
+  name: ''
+});
+
+const editCategoryForm = ref({
+  name: ''
 });
 
 const getAuthHeaders = () => {
@@ -46,19 +46,7 @@ const getAuthHeaders = () => {
   return { 'Authorization': `Bearer ${token}` };
 };
 
-const fetchOutlets = async () => {
-  const headers = getAuthHeaders();
-  if (!headers) return;
-  try {
-    const response = await axios.get(`${API_BASE_URL}/outlets/list-all`, { headers });
-    allOutlets.value = response.data;
-  } catch (err) {
-    console.error('Gagal mengambil data outlet:', err);
-    Swal.fire('Gagal', 'Tidak dapat memuat data outlet.', 'error');
-  }
-};
-
-const fetchUsers = async (page = 1) => {
+const fetchCategories = async (page = 1) => {
   const headers = getAuthHeaders();
   if (!headers) return;
 
@@ -68,32 +56,25 @@ const fetchUsers = async (page = 1) => {
   try {
     const params = new URLSearchParams({ page });
     if (searchQuery.value) params.append('search', searchQuery.value);
-    if (selectedOutletId.value) params.append('outlet_id', selectedOutletId.value);
 
-    const response = await axios.get(`${API_BASE_URL}/admin/users?${params.toString()}`, { headers });
-    users.value = response.data.data;
+    const response = await axios.get(`${API_BASE_URL}/admin/categories?${params.toString()}`, { headers });
+    categories.value = response.data.data;
     paginationData.value = response.data;
   } catch (err) {
-    console.error('Gagal mengambil data user:', err);
-    error.value = err.response?.data?.message || 'Gagal memuat data user.';
+    console.error('Gagal mengambil kategori:', err);
+    error.value = err.response?.data?.message || 'Gagal memuat data kategori.';
   } finally {
     isLoading.value = false;
   }
 };
 
 const resetForm = () => {
-  newUser.value = {
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    outlet_id: ''
-  };
+  newCategory.value.name = '';
 };
 
-const handleAddUser = async () => {
-  if (newUser.value.password !== newUser.value.confirmPassword) {
-    return Swal.fire('Perhatian', 'Konfirmasi password tidak sama.', 'warning');
+const handleAddCategory = async () => {
+  if (!newCategory.value.name.trim()) {
+    return Swal.fire('Perhatian', 'Nama kategori wajib diisi.', 'warning');
   }
 
   const headers = getAuthHeaders();
@@ -101,30 +82,61 @@ const handleAddUser = async () => {
 
   isSubmitting.value = true;
   try {
-    await axios.post(`${API_BASE_URL}/admin/users`, {
-      name: newUser.value.name,
-      email: newUser.value.email,
-      password: newUser.value.password,
-      outlet_id: newUser.value.outlet_id,
+    await axios.post(`${API_BASE_URL}/admin/categories`, {
+      name: newCategory.value.name
     }, { headers });
 
-    Swal.fire('Berhasil', 'Akun admin outlet berhasil dibuat.', 'success');
+    Swal.fire('Berhasil', 'Kategori berhasil ditambahkan.', 'success');
     showAddModal.value = false;
     resetForm();
-    fetchUsers(paginationData.value?.current_page || 1);
+    fetchCategories(paginationData.value?.current_page || 1);
   } catch (err) {
-    console.error('Gagal menambahkan user:', err);
-    const msg = err.response?.data?.message || 'Terjadi kesalahan saat menambahkan user.';
+    console.error('Gagal menambahkan kategori:', err);
+    const msg = err.response?.data?.message || 'Terjadi kesalahan saat menambahkan kategori.';
     Swal.fire('Gagal', msg, 'error');
   } finally {
     isSubmitting.value = false;
   }
 };
 
-const confirmDeleteUser = (user) => {
+const openEditModal = (category) => {
+  selectedCategory.value = category;
+  editCategoryForm.value = { name: category.name };
+  showEditModal.value = true;
+};
+
+const handleUpdateCategory = async () => {
+  if (!selectedCategory.value) return;
+  if (!editCategoryForm.value.name.trim()) {
+    return Swal.fire('Perhatian', 'Nama kategori wajib diisi.', 'warning');
+  }
+
+  const headers = getAuthHeaders();
+  if (!headers) return;
+
+  isSubmitting.value = true;
+  try {
+    await axios.patch(`${API_BASE_URL}/admin/categories/${selectedCategory.value.id}`, {
+      name: editCategoryForm.value.name
+    }, { headers });
+
+    Swal.fire('Berhasil', 'Kategori berhasil diperbarui.', 'success');
+    showEditModal.value = false;
+    selectedCategory.value = null;
+    fetchCategories(paginationData.value?.current_page || 1);
+  } catch (err) {
+    console.error('Gagal memperbarui kategori:', err);
+    const msg = err.response?.data?.message || 'Terjadi kesalahan saat memperbarui kategori.';
+    Swal.fire('Gagal', msg, 'error');
+  } finally {
+    isSubmitting.value = false;
+  }
+};
+
+const confirmDeleteCategory = (category) => {
   Swal.fire({
-    title: 'Hapus akun?',
-    text: `Hapus akses admin ${user.name}?`,
+    title: 'Hapus kategori?',
+    text: `Kategori ${category.name} akan dihapus.`,
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#d33',
@@ -133,23 +145,22 @@ const confirmDeleteUser = (user) => {
     cancelButtonText: 'Batal'
   }).then((result) => {
     if (result.isConfirmed) {
-      deleteUser(user);
+      deleteCategory(category);
     }
   });
 };
 
-const deleteUser = async (user) => {
+const deleteCategory = async (category) => {
   const headers = getAuthHeaders();
   if (!headers) return;
 
   try {
-    await axios.delete(`${API_BASE_URL}/admin/users/${user.id}`, { headers });
-    Swal.fire('Berhasil', 'Akun berhasil dihapus.', 'success');
-    const currentPage = paginationData.value?.current_page || 1;
-    fetchUsers(currentPage);
+    await axios.delete(`${API_BASE_URL}/admin/categories/${category.id}`, { headers });
+    Swal.fire('Berhasil', 'Kategori berhasil dihapus.', 'success');
+    fetchCategories(paginationData.value?.current_page || 1);
   } catch (err) {
-    console.error('Gagal menghapus user:', err);
-    const msg = err.response?.data?.message || 'Terjadi kesalahan saat menghapus user.';
+    console.error('Gagal menghapus kategori:', err);
+    const msg = err.response?.data?.message || 'Terjadi kesalahan saat menghapus kategori.';
     Swal.fire('Gagal', msg, 'error');
   }
 };
@@ -159,13 +170,13 @@ const changePage = (page) => {
   if (!paginationData.value || pageNumber < 1 || pageNumber > paginationData.value.last_page) {
     return;
   }
-  fetchUsers(pageNumber);
+  fetchCategories(pageNumber);
 };
 
 const formatDate = (dateString) => {
   if (!dateString) return '-';
   return new Date(dateString).toLocaleDateString('id-ID', {
-    day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    day: 'numeric', month: 'short', year: 'numeric'
   });
 };
 
@@ -197,11 +208,11 @@ const handleLogout = async () => {
   }
 };
 
-watch([searchQuery, selectedOutletId], () => {
+watch(searchQuery, () => {
   if (debounceTimer.value) {
     clearTimeout(debounceTimer.value);
   }
-  debounceTimer.value = setTimeout(() => fetchUsers(1), 500);
+  debounceTimer.value = setTimeout(() => fetchCategories(1), 500);
 });
 
 onMounted(() => {
@@ -209,8 +220,7 @@ onMounted(() => {
     router.replace('/dashboard-stok');
     return;
   }
-  fetchOutlets();
-  fetchUsers();
+  fetchCategories();
 });
 </script>
 
@@ -273,7 +283,7 @@ onMounted(() => {
 
     <div v-if="isSidebarOpen" @click="closeSidebar" class="fixed inset-0 z-20 bg-black/50 lg:hidden"></div>
 
-    <div class="lg:ml-72 flex flex-col min-h-screen">
+    <div class="lg:ml-64 flex flex-col min-h-screen">
       <header class="sticky top-0 z-10 bg-white shadow-sm flex items-center justify-between p-4 lg:justify-end">
         <button @click="toggleSidebar" class="lg:hidden text-gray-700 hover:text-gray-900">
           <Icon icon="mdi:menu" class="text-3xl" />
@@ -285,74 +295,57 @@ onMounted(() => {
       </header>
 
       <main class="flex-1 p-6 sm:p-8">
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
+        <div class="flex flex-col gap-4 pl-4 sm:flex-row sm:items-center sm:justify-between mb-8">
           <div>
-            <h1 class="text-3xl font-bold text-gray-800">Manajemen User</h1>
-            <p class="text-gray-500">Kelola akun admin outlet pada platform RotiGokki.</p>
+            <h1 class="text-3xl font-bold text-gray-800">Manajemen Kategori</h1>
+            <p class="text-gray-500">Atur daftar kategori produk untuk semua outlet.</p>
           </div>
           <button @click="showAddModal = true" class="bg-[#0F4B7D] hover:bg-[#0c3a63] text-white font-semibold px-6 py-3 rounded-lg shadow transition-colors">
-            + Tambah User
+            + Tambah Kategori
           </button>
         </div>
 
-        <div class="bg-white rounded-xl shadow p-5 mb-6 grid gap-4 md:grid-cols-2">
-          <div>
-            <label class="block text-sm font-medium text-gray-600 mb-1">Cari User</label>
-            <input 
-              type="text" 
-              v-model="searchQuery" 
-              placeholder="Nama atau email..."
-              class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0F4B7D]"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600 mb-1">Filter Outlet</label>
-            <select 
-              v-model="selectedOutletId"
-              class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0F4B7D]"
-            >
-              <option value="">Semua Outlet</option>
-              <option v-for="outlet in allOutlets" :key="outlet.id" :value="outlet.id">
-                {{ outlet.nama }}
-              </option>
-            </select>
-          </div>
+        <div class="bg-white rounded-xl shadow p-5 mb-6">
+          <label class="block text-sm font-medium text-gray-600 mb-2">Cari Kategori</label>
+          <input 
+            type="text" 
+            v-model="searchQuery" 
+            placeholder="Nama kategori..."
+            class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0F4B7D]"
+          />
         </div>
 
         <div class="bg-white rounded-xl shadow overflow-hidden">
-          <div v-if="isLoading" class="p-8 text-center text-gray-500">Memuat data user...</div>
+          <div v-if="isLoading" class="p-8 text-center text-gray-500">Memuat data kategori...</div>
           <div v-else-if="error" class="p-8 text-center text-red-500">{{ error }}</div>
           <div v-else>
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Outlet</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Kategori</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah Produk</th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dibuat</th>
                   <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                 </tr>
               </thead>
-              <tbody class="bg-white divide-y divide-gray-200" v-if="users.length">
-                <tr v-for="user in users" :key="user.id">
+              <tbody class="bg-white divide-y divide-gray-200" v-if="categories.length">
+                <tr v-for="category in categories" :key="category.id">
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm font-semibold text-gray-900">{{ user.name }}</div>
+                    <div class="text-sm font-semibold text-gray-900">{{ category.name }}</div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-600">{{ user.email }}</div>
+                    <div class="text-sm text-gray-600">{{ category.products_count }} produk</div>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-700">{{ user.outlet?.nama || '-' }}</div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatDate(user.created_at) }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button @click="confirmDeleteUser(user)" class="text-red-600 hover:text-red-800">Hapus</button>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatDate(category.created_at) }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end gap-4">
+                    <button @click="openEditModal(category)" class="text-blue-600 hover:text-blue-800">Edit</button>
+                    <button @click="confirmDeleteCategory(category)" class="text-red-600 hover:text-red-800">Hapus</button>
                   </td>
                 </tr>
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td colspan="5" class="px-6 py-8 text-center text-gray-500">Belum ada data user.</td>
+                  <td colspan="4" class="px-6 py-8 text-center text-gray-500">Belum ada data kategori.</td>
                 </tr>
               </tbody>
             </table>
@@ -367,41 +360,43 @@ onMounted(() => {
     </div>
 
     <div v-if="showAddModal" class="fixed inset-0 z-40 flex items-center justify-center bg-black/50 px-4">
-      <div class="bg-white rounded-xl shadow-lg w-full max-w-lg p-6">
+      <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
         <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-semibold text-gray-800">Tambah User Admin Outlet</h2>
+          <h2 class="text-xl font-semibold text-gray-800">Tambah Kategori</h2>
           <button @click="showAddModal = false" class="text-gray-400 hover:text-gray-600">
             <Icon icon="mdi:close" class="text-2xl" />
           </button>
         </div>
-        <form @submit.prevent="handleAddUser" class="space-y-4">
+        <form @submit.prevent="handleAddCategory" class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-600 mb-1">Nama</label>
-            <input v-model="newUser.name" type="text" required class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0F4B7D]" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600 mb-1">Email</label>
-            <input v-model="newUser.email" type="email" required class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0F4B7D]" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600 mb-1">Outlet</label>
-            <select v-model="newUser.outlet_id" required class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0F4B7D]">
-              <option value="">Pilih Outlet</option>
-              <option v-for="outlet in allOutlets" :key="outlet.id" :value="outlet.id">{{ outlet.nama }}</option>
-            </select>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-600 mb-1">Password</label>
-              <input v-model="newUser.password" type="password" required class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0F4B7D]" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-600 mb-1">Konfirmasi Password</label>
-              <input v-model="newUser.confirmPassword" type="password" required class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0F4B7D]" />
-            </div>
+            <label class="block text-sm font-medium text-gray-600 mb-1">Nama Kategori</label>
+            <input v-model="newCategory.name" type="text" required class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0F4B7D]" />
           </div>
           <div class="flex justify-end gap-3 pt-4">
             <button type="button" @click="showAddModal = false" class="px-4 py-2 rounded-lg border border-gray-200 text-gray-600">Batal</button>
+            <button type="submit" :disabled="isSubmitting" class="px-6 py-2 rounded-lg bg-[#0F4B7D] text-white hover:bg-[#0c3a63] disabled:opacity-50">
+              {{ isSubmitting ? 'Menyimpan...' : 'Simpan' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div v-if="showEditModal" class="fixed inset-0 z-40 flex items-center justify-center bg-black/50 px-4">
+      <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold text-gray-800">Edit Kategori</h2>
+          <button @click="showEditModal = false" class="text-gray-400 hover:text-gray-600">
+            <Icon icon="mdi:close" class="text-2xl" />
+          </button>
+        </div>
+        <form @submit.prevent="handleUpdateCategory" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1">Nama Kategori</label>
+            <input v-model="editCategoryForm.name" type="text" required class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0F4B7D]" />
+          </div>
+          <div class="flex justify-end gap-3 pt-4">
+            <button type="button" @click="showEditModal = false" class="px-4 py-2 rounded-lg border border-gray-200 text-gray-600">Batal</button>
             <button type="submit" :disabled="isSubmitting" class="px-6 py-2 rounded-lg bg-[#0F4B7D] text-white hover:bg-[#0c3a63] disabled:opacity-50">
               {{ isSubmitting ? 'Menyimpan...' : 'Simpan' }}
             </button>

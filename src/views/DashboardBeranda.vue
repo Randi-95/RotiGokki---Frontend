@@ -131,7 +131,7 @@ const handleLogout = async () => {
   <div class="relative min-h-screen bg-gray-50 font-poppins">
     <aside 
       :class="[
-        'fixed inset-y-0 left-0 z-30 w-64 bg-[#0F4B7D] text-white transition-transform duration-300 ease-in-out',
+        'fixed inset-y-0 left-0 z-30 w-72 bg-[#0F4B7D] text-white transition-transform duration-300 ease-in-out',
         'lg:translate-x-0', 
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full' 
       ]"
@@ -159,7 +159,10 @@ const handleLogout = async () => {
               <Icon icon="gridicons:product" class="text-xl"/>
               <h2 class="font-medium text-[16px]">Manajemen Produk</h2>
             </RouterLink>
-
+            <RouterLink to="/dashboard-kategori" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]" v-if="adminUser.role === 'superadmin'">
+              <Icon icon="mdi:label-multiple" class="text-xl"/>
+              <h2 class="font-medium text-[16px]">Manajemen Kategori</h2>
+            </RouterLink>
             <RouterLink to="/dashboard-outlet" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]" v-if="adminUser.role === 'superadmin'">
               <Icon icon="solar:shop-outline" class="text-xl"/>
               <h2 class="font-medium text-[16px]">Manajemen Outlet</h2>
@@ -198,7 +201,7 @@ const handleLogout = async () => {
       aria-hidden="true"
     ></div>
 
-    <div class="lg:ml-64 flex flex-col min-h-screen">
+    <div class="lg:ml-72 flex flex-col min-h-screen">
       <header class="sticky top-0 z-10 bg-white shadow-sm flex items-center justify-between p-4 lg:justify-end">
         <button 
           @click="toggleSidebar" 
