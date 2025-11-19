@@ -165,6 +165,11 @@ const handleLogout = async () => {
               <h2 class="font-medium text-[16px]">Manajemen Outlet</h2>
             </RouterLink>
 
+            <RouterLink to="/dashboard-users" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]" v-if="adminUser.role === 'superadmin'">
+              <Icon icon="mdi:account-group" class="text-xl"/>
+              <h2 class="font-medium text-[16px]">Manajemen User</h2>
+            </RouterLink>
+
             <RouterLink to="/dashboard-stok" @click="closeSidebar" active-class="bg-[#073B6B]" class="w-full flex gap-2 items-center py-3 rounded-lg px-4 text-white font-poppins hover:bg-[#073B6B]">
               <Icon icon="mdi:cube-outline" class="text-xl"/>
               <h2 class="font-medium text-[16px]">Manajemen Stok</h2>

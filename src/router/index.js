@@ -10,6 +10,7 @@ import ProdukDetail from '@/views/ProdukDetail.vue'
 import DashboardProduk from '@/views/DashboardProduk.vue'
 import DashboardOutlet from '@/views/DashboardOutlet.vue'
 import DashboardPesanan from '@/views/DashboardPesanan.vue'
+import DashboardUser from '@/views/DashboardUser.vue'
 import ManajemenStok from '@/views/ManajemenStok.vue'
 
 
@@ -80,6 +81,12 @@ const router = createRouter({
       path: '/dashboard-stok',
       name: 'dashboard_stok',
       component: ManajemenStok,
+      meta: { requiresAuth : true }
+    },
+    {
+      path: '/dashboard-users',
+      name: 'dashboard_users',
+      component: DashboardUser,
       meta: { requiresAuth : true }
     },
     {
