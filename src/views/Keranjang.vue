@@ -209,11 +209,14 @@ const handleCheckout = async () => {
     localStorage.removeItem('shoppingCart');
 
   } catch (error) {
+    const backendMessage = error.response?.data?.message;
+    const isStockIssue = error.response?.status === 422 && backendMessage;
+
     console.error('Gagal mengirim pesanan:', error.response ? error.response.data : error.message);
     Swal.fire({
-      title: "Oops... Terjadi Kesalahan",
-      text: error.response?.data?.message || "Gagal membuat pesanan. Pastikan outlet memiliki stok yang cukup.",
-      icon: 'error'
+      title: isStockIssue ? "Stok Produk Tidak Cukup" : "Oops... Terjadi Kesalahan",
+      text: backendMessage || "Gagal membuat pesanan. Pastikan outlet memiliki stok yang cukup.",
+      icon: isStockIssue ? 'warning' : 'error'
     });
   } finally {
     isLoading.value = false;
