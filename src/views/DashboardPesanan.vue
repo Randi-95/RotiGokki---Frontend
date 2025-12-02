@@ -87,6 +87,49 @@ const formatCurrency = (value) => {
   }).format(value);
 };
 
+const getWhatsappMessage = (pesanan) => {
+  if (!pesanan) return '';
+  const status = (pesanan.status || '').toLowerCase();
+  const name = pesanan.customer_name || '';
+  const total = formatCurrency(pesanan.total_amount) || 'Rp 0';
+
+  if (status === 'pending') {
+    return `Halo Kak ${name}, sekadar mengingatkan pembayaran pesanan Anda di Roti Gokki sebesar ${total}.
+
+Pembayaran bisa ditransfer ke:
+Bank BCA: 08993903149 (a/n Roti Gokki)
+
+Ditunggu konfirmasinya agar pesanan bisa langsung kami siapkan. Terima kasih.`;
+  }
+
+  if (status === 'proses') {
+    return `Halo Kak ${name}, pesanan Anda di Roti Gokki saat ini sedang kami proses.
+
+Mohon ditunggu ya, kami akan segera mengabari jika pesanan sudah siap dikirim/diambil. Terima kasih.`;
+  }
+
+  if (status === 'selesai') {
+    return `Halo Kak ${name}, pesanan Anda di Roti Gokki telah selesai dan siap dikirim/diambil.
+
+Silakan konfirmasi waktu penerimaan agar pesanan bisa segera kami serahkan. Terima kasih.`;
+  }
+
+  return '';
+};
+
+const buildWhatsappLink = (pesanan) => {
+  if (!pesanan) return '#';
+  const message = getWhatsappMessage(pesanan);
+  if (!message) return '#';
+
+  return `https://wa.me/${formatNomor(pesanan.customer_whatsapp)}?text=${encodeURIComponent(message)}`;
+};
+
+const canContactCustomer = (pesanan) => {
+  const status = (pesanan?.status || '').toLowerCase();
+  return ['pending', 'proses', 'selesai'].includes(status);
+};
+
 const getStatusClass = (status) => {
   if (status === 'Pending') {
     return 'bg-yellow-100 text-yellow-800';
@@ -680,7 +723,13 @@ watch(isDetailModalOpen, (isOpen) => {
                   </select>
                 </div>
                 <div class="flex gap-2 items-center">
-                  <a :href="`https://wa.me/${formatNomor(selectedPesanan.customer_whatsapp)}?text=Halo%20Kak%20${selectedPesanan.customer_name},%20sekedar%20mengingatkan%20untuk%20pembayaran%20pesanan%20Anda%20di%20Roti%20Gokki%20sebesar%20${formatCurrency(selectedPesanan.total_amount)}.%0A%0APembayaran%20bisa%20ditransfer%20ke%3A%0ABank%20BCA%3A%2008993903149%20(a%2Fn%20Roti%20Gokki)%0A%0ADitunggu%20konfirmasinya%20agar%20pesanan%20bisa%20langsung%20kami%20siapkan.%20Terima%20kasih.`"  v-if="selectedPesanan?.status === 'pending'" class="bg-primary text-white font-medium py-2 px-6 rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-wait">
+                  <a
+                    v-if="canContactCustomer(selectedPesanan)"
+                    :href="buildWhatsappLink(selectedPesanan)"
+                    target="_blank"
+                    rel="noopener"
+                    class="bg-primary text-white font-medium py-2 px-6 rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-wait"
+                  >
                     Hubungi
                   </a>
                   <button 
