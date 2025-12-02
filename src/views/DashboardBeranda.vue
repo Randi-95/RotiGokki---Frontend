@@ -3,6 +3,8 @@ import { computed, onMounted, ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import axios from 'axios';
 import { RouterLink, useRouter } from 'vue-router';
+
+const API_BASE_URL = 'http://127.0.0.1:8000/api';
 const isSidebarOpen = ref(false);
 
 const totalProduk = ref()
@@ -10,6 +12,8 @@ const totalOutlet = ref()
 const totalKategori = ref()
 const totalProdukPerKategori = ref([])
 const pesanans = ref([])
+const latestOrdersLoading = ref(false)
+const latestOrdersError = ref(null)
 const router = useRouter()
 
 
@@ -77,10 +81,29 @@ const fetchTotalProdukPerKategori = async () => {
 }
 
 const fetchPesanan = async () => {
-  const response = await axios.get('http://127.0.0.1:8000/api/orders?page=1')
+  latestOrdersLoading.value = true
+  latestOrdersError.value = null
 
-  console.log(response.data.data)
-  pesanans.value = response.data.data
+  const headers = getAuthHeaders()
+  if (!headers) {
+    latestOrdersLoading.value = false
+    latestOrdersError.value = 'Sesi login berakhir. Silakan login kembali.'
+    return
+  }
+
+  try {
+    const response = await axios.get(`${API_BASE_URL}/orders`, {
+      params: { page: 1 },
+      headers
+    })
+
+    pesanans.value = response.data?.data ?? []
+  } catch (error) {
+    console.error('Gagal memuat pesanan terbaru:', error)
+    latestOrdersError.value = error.response?.data?.message || 'Gagal memuat pesanan terbaru.'
+  } finally {
+    latestOrdersLoading.value = false
+  }
 }
 
 onMounted(() => {
@@ -122,9 +145,22 @@ const handleLogout = async () => {
     console.error("Gagal logout dari server:", error);
   } finally {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('data_admin_saya');
     router.push('/');
   }
 };
+
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    router.push('/');
+    return null;
+  }
+
+  return {
+    Authorization: `Bearer ${token}`
+  }
+}
 </script>
 
 <template>
@@ -270,7 +306,10 @@ const handleLogout = async () => {
           <div class="bg-white p-6 rounded-xl shadow-md">
             <h2 class="text-xl font-bold text-gray-800 mb-4">Pesanan Terbaru</h2>
             <div class="flex flex-col gap-3">
-              <div v-for="pesanan in pesanans" :key="pesanan.id" class="flex justify-between items-center text-sm">
+              <p v-if="latestOrdersLoading" class="text-sm text-gray-500">Memuat pesanan terbaru...</p>
+              <p v-else-if="latestOrdersError" class="text-sm text-red-500">{{ latestOrdersError }}</p>
+              <p v-else-if="!pesanans.length" class="text-sm text-gray-500">Belum ada pesanan terbaru.</p>
+              <div v-else v-for="pesanan in pesanans" :key="pesanan.id" class="flex justify-between items-center text-sm">
                 <div class="flex items-center gap-3">
                   <span class="font-semibold py-1 px-3 rounded-full text-[15px]" >{{ pesanan.customer_name }}</span>
                   <p class="text-gray-700 truncate max-w-[120px] sm:max-w-none text-xs">{{ formatDate(pesanan.created_at) }}</p>
